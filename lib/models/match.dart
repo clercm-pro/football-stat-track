@@ -1,0 +1,227 @@
+import 'package:isar/isar.dart';
+import 'package:uuid/uuid.dart';
+
+part 'match.g.dart';
+
+/// Match model - Represents a game session with recorded statistics
+/// 
+/// Isar collection for local storage
+/// Tracks goals, assists, and duration for a specific profile and season
+@collection
+class Match {
+  @Id()
+  final String id;
+  
+  final String childId;
+  
+  final String seasonId;
+  
+  final DateTime startTime;
+  
+  final DateTime? endTime;
+  
+  final int goals;
+  
+  final int assists;
+  
+  final DateTime createdAt;
+  
+  final DateTime updatedAt;
+
+  Match({
+    required this.id,
+    required this.childId,
+    required this.seasonId,
+    required this.startTime,
+    this.endTime,
+    this.goals = 0,
+    this.assists = 0,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  /// Create a new match with generated ID
+  factory Match.newMatch({
+    required String childId,
+    required String seasonId,
+  }) {
+    return Match(
+      id: const Uuid().v4(),
+      childId: childId,
+      seasonId: seasonId,
+      startTime: DateTime.now(),
+      endTime: null,
+      goals: 0,
+      assists: 0,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  /// Check if match is currently in progress
+  bool get isInProgress => endTime == null;
+
+  /// Calculate duration
+  Duration? get duration {
+    if (endTime == null) return null;
+    return endTime!.difference(startTime);
+  }
+
+  /// Duration in minutes (rounded down)
+  int? get durationInMinutes {
+    final dur = duration;
+    if (dur == null) return null;
+    return dur.inMinutes;
+  }
+
+  /// Copy with updated values
+  Match copyWith({
+    String? id,
+    String? childId,
+    String? seasonId,
+    DateTime? startTime,
+    DateTime? endTime,
+    int? goals,
+    int? assists,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return Match(
+      id: id ?? this.id,
+      childId: childId ?? this.childId,
+      seasonId: seasonId ?? this.seasonId,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+      goals: goals ?? this.goals,
+      assists: assists ?? this.assists,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? DateTime.now(),
+    );
+  }
+
+  /// Increment goals
+  Match addGoal() {
+    return copyWith(
+      goals: goals + 1,
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  /// Decrement goals (minimum 0)
+  Match removeGoal() {
+    return copyWith(
+      goals: goals > 0 ? goals - 1 : 0,
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  /// Increment assists
+  Match addAssist() {
+    return copyWith(
+      assists: assists + 1,
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  /// Decrement assists (minimum 0)
+  Match removeAssist() {
+    return copyWith(
+      assists: assists > 0 ? assists - 1 : 0,
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  /// End the match
+  Match endMatch() {
+    return copyWith(
+      endTime: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  /// Convert to JSON for serialization
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'childId': childId,
+      'seasonId': seasonId,
+      'startTime': startTime.toIso8601String(),
+      'endTime': endTime?.toIso8601String(),
+      'goals': goals,
+      'assists': assists,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
+
+  /// Create from JSON
+  factory Match.fromJson(Map<String, dynamic> json) {
+    return Match(
+      id: json['id'] as String,
+      childId: json['childId'] as String,
+      seasonId: json['seasonId'] as String,
+      startTime: DateTime.parse(json['startTime'] as String),
+      endTime: json['endTime'] != null 
+          ? DateTime.parse(json['endTime'] as String) 
+          : null,
+      goals: json['goals'] as int,
+      assists: json['assists'] as int,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Match(id: $id, childId: $childId, goals: $goals, assists: $assists, isInProgress: $isInProgress)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is Match && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+}
+
+/// MatchStats - Computed statistics from multiple matches
+class MatchStats {
+  final int totalMatches;
+  final int totalGoals;
+  final int totalAssists;
+
+  MatchStats({
+    this.totalMatches = 0,
+    this.totalGoals = 0,
+    this.totalAssists = 0,
+  });
+
+  /// Create from list of matches
+  factory MatchStats.fromMatches(List<Match> matches) {
+    return MatchStats(
+      totalMatches: matches.length,
+      totalGoals: matches.fold(0, (sum, match) => sum + match.goals),
+      totalAssists: matches.fold(0, (sum, match) => sum + match.assists),
+    );
+  }
+
+  /// Copy with updated values
+  MatchStats copyWith({
+    int? totalMatches,
+    int? totalGoals,
+    int? totalAssists,
+  }) {
+    return MatchStats(
+      totalMatches: totalMatches ?? this.totalMatches,
+      totalGoals: totalGoals ?? this.totalGoals,
+      totalAssists: totalAssists ?? this.totalAssists,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'MatchStats(matches: $totalMatches, goals: $totalGoals, assists: $totalAssists)';
+  }
+}

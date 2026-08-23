@@ -210,7 +210,7 @@ class ProfileScreen extends ConsumerWidget {
         value: seasons.isNotEmpty ? seasons.first : null,
         onChanged: (Season? newValue) {
           if (newValue != null) {
-            // TODO: Update selected season
+            ref.read(selectedSeasonProvider.notifier).state = newValue;
           }
         },
         items: seasons.map<DropdownMenuItem<Season>>((Season season) {
@@ -329,11 +329,21 @@ class ProfileScreen extends ConsumerWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ElevatedButton.icon(
         onPressed: () {
-          // TODO: Check if a match is already in progress
+          final hasMatchInProgress = ref.read(matchesProvider.notifier).hasMatchInProgress(profile.id);
+          if (hasMatchInProgress) {
+            // Show error or navigate to existing match
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('A match is already in progress for this profile'),
+                backgroundColor: AppColors.error,
+              ),
+            );
+            return;
+          }
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const MatchScreen(),
+              builder: (context) => MatchScreen(profile: profile),
             ),
           );
         },

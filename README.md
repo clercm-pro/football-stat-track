@@ -1,15 +1,83 @@
-# football-stat-track
+# StatTrack
 
-**Voici le fichier markdown complet avec toutes les spécifications fonctionnelles :**
+**Local-first mobile app for tracking sports statistics across multiple profiles.**
 
 ---
 
-# **📄 SPÉCIFICATIONS FONCTIONNELLES - StatTrack**
+## What is StatTrack?
 
-**Version :** 1.0  
-**Date :** 23/08/2026  
-**Auteur :** Assistant IA  
-**Projet :** football-stat-track
+StatTrack is a cross-platform mobile application (Android & iOS) that allows users to track sports statistics (goals, assists, matches played) for multiple profiles (children, adults, teams). Designed with simplicity and privacy in mind, all data is stored locally with optional peer-to-peer synchronization.
+
+## Key Features
+
+- **Profile Management**: Track up to 4 players per device
+- **Season Organization**: Organize data by sport seasons (e.g., 2026/2027)
+- **Match Tracking**: Real-time goal and assist counting with timer
+- **Local-First**: 100% of data stored locally using Hive database
+- **Peer-to-Peer Sync**: Synchronize data between devices without a central server
+- **End-to-End Encryption**: AES-256 encryption for data security
+- **Cross-Sport**: Adaptable for football, basketball, handball, and more
+
+## Target Audience
+
+- Parents tracking their children's sports performance
+- Amateur athletes
+- Coaches managing small groups
+
+## Quick Start
+
+Get started with development:
+
+```bash
+# Clone the repository
+git clone https://github.com/clercm-pro/football-stat-track.git
+cd football-stat-track
+
+# Install dependencies
+flutter pub get
+
+# Generate Hive adapters
+flutter packages pub run build_runner build
+
+# Run the app
+flutter run
+```
+
+## Documentation
+
+- [Functional Specifications](docs/FUNCTIONAL-SPECS.md) - User stories, flows, and business rules
+- [Technical Architecture](docs/ARCHITECTURE.md) - Stack, structure, and technical decisions
+- [Design Guidelines](docs/DESIGN.md) - UI/UX, color palette, and components
+- [Data Model](docs/DATA-MODEL.md) - Database schemas and entity relationships
+- [Sync Protocol](docs/SYNC-PROTOCOL.md) - Peer-to-peer synchronization implementation
+- [Setup & Deployment](docs/SETUP.md) - Development environment and deployment instructions
+- [Roadmap](docs/ROADMAP.md) - Project milestones and next steps
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Frontend | Flutter (Dart SDK >= 3.0.0) |
+| State Management | Riverpod 2.4.9 |
+| Database | Hive 2.2.3 (Local NoSQL) |
+| Sync | WebRTC + Bluetooth |
+| Encryption | AES-256 (cryptography 2.5.0) |
+
+## Project Status
+
+- Prototyping: Complete
+- Local Backend: Complete
+- Frontend: Complete
+- Synchronization: In Progress
+- Testing: Pending
+- Beta: Pending
+- Production Release: Pending
+
+---
+
+**Version**: 1.0.0  
+**License**: MIT  
+**Maintainer**: [clercm-pro](https://github.com/clercm-pro)
 
 ---
 

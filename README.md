@@ -18,6 +18,18 @@ StatTrack is a cross-platform mobile application (Android & iOS) that allows use
 - **End-to-End Encryption**: AES-256 encryption for data security
 - **Cross-Sport**: Adaptable for football, basketball, handball, and more
 
+## 🔐 Security & Privacy
+
+- **No Personal Data Collection**: We **do not collect, store, or process** any personal data. All data remains **exclusively on your device**.
+- **Local Storage Only**: Data is stored in **Hive database** on your device — like a digital notebook.
+- **End-to-End Encryption**: All data (profiles, stats, seasons) is **encrypted with AES-256** before storage and synchronization.
+- **Peer-to-Peer Sync**: Data synchronization between your devices uses **direct encrypted connections** (WebRTC/Bluetooth) — **no central server**, no third-party access.
+- **Your Responsibility**: If you record **real names or identifiable information**, you act as the **data controller** and must comply with applicable laws (e.g., GDPR).
+
+> ✅ **You are in control of your data.** We cannot access it — not us, not anyone else.
+
+See [SECURITY.md](docs/SECURITY.md) for full technical and legal details.
+
 ## Target Audience
 
 - Parents tracking their children's sports performance
@@ -52,6 +64,7 @@ flutter run
 - [Sync Protocol](docs/SYNC-PROTOCOL.md) - Peer-to-peer synchronization implementation
 - [Setup & Deployment](docs/SETUP.md) - Development environment and deployment instructions
 - [Roadmap](docs/ROADMAP.md) - Project milestones and next steps
+- [Security & Privacy](docs/SECURITY.md) - Data protection, encryption, and legal compliance
 
 ## Tech Stack
 
@@ -78,6 +91,10 @@ flutter run
 **Version**: 1.0.0  
 **License**: MIT  
 **Maintainer**: [clercm-pro](https://github.com/clercm-pro)
+
+## 📄 Legal
+
+- [Terms of Service (CGU)](docs/CGU.md) - Conditions Générales d'Utilisation (French)
 
 ---
 

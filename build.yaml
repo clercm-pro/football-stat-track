@@ -1,0 +1,11 @@
+targets:
+  $default:
+    builders:
+      hive_generator:hive_generator:
+        generate_for:
+          - lib/models/child_profile.dart
+          - lib/models/season.dart
+          - lib/models/match.dart
+        options:
+          # Optional: specify the output directory for generated files
+          # output_directory: lib/generated

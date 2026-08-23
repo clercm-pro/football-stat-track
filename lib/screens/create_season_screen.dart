@@ -110,11 +110,11 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
         createdAt: DateTime.now(),
       );
       
-      // TODO: Add season via provider
-      // ref.read(seasonsProvider.notifier).addSeason(season);
+      // Add season via provider
+      final addedSeason = await ref.read(seasonsProvider.notifier).addSeason(season);
       
       if (mounted) {
-        Navigator.pop(context, season);
+        Navigator.pop(context, addedSeason);
       }
     }
   }

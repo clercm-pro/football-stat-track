@@ -86,11 +86,11 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
         updatedAt: DateTime.now(),
       );
       
-      // TODO: Add profile via provider
-      // ref.read(childProfilesProvider.notifier).addProfile(profile);
+      // Add profile via provider
+      final addedProfile = await ref.read(childProfilesProvider.notifier).addProfile(profile);
       
       if (mounted) {
-        Navigator.pop(context, profile);
+        Navigator.pop(context, addedProfile);
       }
     }
   }

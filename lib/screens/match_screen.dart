@@ -1,6 +1,10 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../config/colors.dart';
+import '../models/child_profile.dart';
+import '../models/season.dart';
+import '../providers/match_provider.dart';
+import '../providers/season_provider.dart';
 
 /// Match Screen - Live match tracking with goal/assist counters
 /// 
@@ -11,7 +15,9 @@ import '../config/colors.dart';
 /// - Haptic feedback on press
 /// - Stop/end match button
 class MatchScreen extends ConsumerStatefulWidget {
-  const MatchScreen({super.key});
+  final ChildProfile profile;
+  
+  const MatchScreen({super.key, required this.profile});
 
   @override
   ConsumerState<MatchScreen> createState() => _MatchScreenState();
@@ -25,6 +31,8 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
   late Animation<int> _minutesAnimation;
   int _totalSeconds = 0;
   bool _isRunning = true;
+  String? _matchId;
+  DateTime? _startTime;
   
   // For haptic feedback simulation (would use vibration package in production)
   bool _enableHaptics = true;
@@ -46,8 +54,30 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
       }
     });
     
+    // Initialize match
+    _initMatch();
+    
     // Start the timer
     _timerController.repeat();
+  }
+  
+  /// Initialize a new match
+  Future<void> _initMatch() async {
+    _startTime = DateTime.now();
+    // Get current season
+    final currentSeason = ref.read(currentSeasonProvider);
+    if (currentSeason != null) {
+      // Create new match in database
+      final newMatch = await ref.read(matchesProvider.notifier).addMatch(
+        Match.newMatch(
+          childId: widget.profile.id,
+          seasonId: currentSeason.id,
+        ),
+      );
+      if (newMatch != null) {
+        _matchId = newMatch.id;
+      }
+    }
   }
 
   @override
@@ -64,38 +94,58 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
   }
 
   /// Increment goals counter
-  void _incrementGoals() {
+  Future<void> _incrementGoals() async {
     setState(() {
       _goals++;
     });
     _triggerHaptic();
+    
+    // Update in database if match exists
+    if (_matchId != null) {
+      await ref.read(matchesProvider.notifier).updateGoals(_matchId!, true);
+    }
   }
 
   /// Decrement goals counter (long press)
-  void _decrementGoals() {
+  Future<void> _decrementGoals() async {
     if (_goals > 0) {
       setState(() {
         _goals--;
       });
       _triggerHaptic();
+      
+      // Update in database if match exists
+      if (_matchId != null) {
+        await ref.read(matchesProvider.notifier).updateGoals(_matchId!, false);
+      }
     }
   }
 
   /// Increment assists counter
-  void _incrementAssists() {
+  Future<void> _incrementAssists() async {
     setState(() {
       _assists++;
     });
     _triggerHaptic();
+    
+    // Update in database if match exists
+    if (_matchId != null) {
+      await ref.read(matchesProvider.notifier).updateAssists(_matchId!, true);
+    }
   }
 
   /// Decrement assists counter (long press)
-  void _decrementAssists() {
+  Future<void> _decrementAssists() async {
     if (_assists > 0) {
       setState(() {
         _assists--;
       });
       _triggerHaptic();
+      
+      // Update in database if match exists
+      if (_matchId != null) {
+        await ref.read(matchesProvider.notifier).updateAssists(_matchId!, false);
+      }
     }
   }
 
@@ -107,7 +157,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
   }
 
   /// Stop the match and show end dialog
-  void _stopMatch() {
+  Future<void> _stopMatch() async {
     _isRunning = false;
     _timerController.stop();
     
@@ -161,8 +211,11 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
             ),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               // Save match and return
+              if (_matchId != null) {
+                await ref.read(matchesProvider.notifier).endMatch(_matchId!);
+              }
               Navigator.popUntil(context, (route) => route.isFirst);
             },
             style: ElevatedButton.styleFrom(
@@ -389,8 +442,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
         children: [
           // Cancel button
           OutlinedButton.icon(
-            onPressed: () {
+            onPressed: () async {
               _timerController.stop();
+              // Delete the match if it was created
+              if (_matchId != null) {
+                await ref.read(matchesProvider.notifier).deleteMatch(_matchId!);
+              }
               Navigator.pop(context);
             },
             icon: const Icon(Icons.close, color: AppColors.error),
@@ -421,7 +478,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
           ),
           // End match button
           ElevatedButton.icon(
-            onPressed: _stopMatch,
+            onPressed: () => _stopMatch(),
             icon: const Icon(Icons.check, size: 20),
             label: const Text(
               'END MATCH',

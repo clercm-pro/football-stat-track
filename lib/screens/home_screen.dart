@@ -177,8 +177,8 @@ class HomeScreen extends ConsumerWidget {
             ),
           ),
           TextButton(
-            onPressed: () {
-              // TODO: Implement delete logic
+            onPressed: () async {
+              await ref.read(childProfilesProvider.notifier).deleteProfile(profile.id);
               Navigator.pop(context);
             },
             child: const Text(

@@ -2,22 +2,22 @@ import 'package:isar/isar.dart';
 
 part 'season.g.dart';
 
-/// Season model - Represents a sports season for organizing data
-/// 
-/// Isar collection for local storage
-/// A season runs from September to June and spans two years (e.g., 2026/2027)
+/// Season model - Represents a sports season for organizing data.
+///
+/// Isar collection for local storage.
+/// A season runs from September to June and spans two years
+/// (e.g., 2026/2027).
 @Collection()
 class Season {
-
   Season({
-    this.id = Isar.autoIncrement,
     required this.name,
     required this.startYear,
     required this.endYear,
     required this.createdAt,
+    this.id = Isar.autoIncrement,
   });
 
-  /// Create a new season with auto-increment ID
+  /// Create a new season with auto-increment ID.
   factory Season.newSeason({
     required final int startYear,
     required final int endYear,
@@ -31,7 +31,7 @@ class Season {
     );
   }
 
-  /// Create from JSON
+  /// Create from JSON.
   factory Season.fromJson(final Map<String, dynamic> json) {
     return Season(
       id: json['id'] as int? ?? Isar.autoIncrement,
@@ -41,23 +41,24 @@ class Season {
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }
+
   Id id = Isar.autoIncrement;
-  
+
   final String name;
-  
+
   final int startYear;
-  
+
   final int endYear;
-  
+
   final DateTime createdAt;
 
-  /// Copy with updated values
+  /// Copy with updated values.
   Season copyWith({
-    Id? id,
-    String? name,
-    int? startYear,
-    int? endYear,
-    DateTime? createdAt,
+    final Id? id,
+    final String? name,
+    final int? startYear,
+    final int? endYear,
+    final DateTime? createdAt,
   }) {
     return Season(
       id: id ?? this.id,
@@ -68,53 +69,56 @@ class Season {
     );
   }
 
-  /// Check if this season is the current season
+  /// Check if this season is the current season.
   bool get isCurrent {
     final now = DateTime.now();
     final currentMonth = now.month;
-    
-    // Season runs from September to June
-    // Current season starts in September of startYear and ends in June of endYear
+
+    // Season runs from September to June.
+    // Current season starts in September of startYear and ends in June of
+    // endYear.
     if (currentMonth >= 9) {
-      // September to December: current season is startYear/endYear where startYear == now.year
+      // September to December: current season is startYear/endYear where
+      // startYear == now.year.
       return startYear == now.year;
     } else {
-      // January to June: current season is startYear/endYear where endYear == now.year
+      // January to June: current season is startYear/endYear where
+      // endYear == now.year.
       return endYear == now.year;
     }
   }
 
-  /// Check if this season is in the future
+  /// Check if this season is in the future.
   bool get isFuture {
     final now = DateTime.now();
     final currentMonth = now.month;
-    
+
     if (endYear > now.year) {
       return true;
     }
     if (endYear == now.year && currentMonth < 9) {
-      // Before September of endYear
+      // Before September of endYear.
       return true;
     }
     return false;
   }
 
-  /// Check if this season is in the past
+  /// Check if this season is in the past.
   bool get isPast {
     final now = DateTime.now();
     final currentMonth = now.month;
-    
+
     if (startYear < now.year) {
       return true;
     }
     if (startYear == now.year && currentMonth >= 9) {
-      // After September of startYear
-      return false; // This is current season
+      // After September of startYear.
+      return false; // This is current season.
     }
     return startYear < now.year;
   }
 
-  /// Convert to JSON for serialization
+  /// Convert to JSON for serialization.
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -131,8 +135,10 @@ class Season {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
+  bool operator ==(final Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
     return other is Season && other.id == id;
   }
 

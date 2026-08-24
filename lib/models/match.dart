@@ -10,7 +10,12 @@ part 'match.g.dart';
 class Match {
 
   Match({
-    required this.childId, required this.seasonId, required this.startTime, required this.createdAt, required this.updatedAt, this.id = Isar.autoIncrement,
+    required this.childId,
+    required this.seasonId,
+    required this.startTime,
+    required this.createdAt,
+    required this.updatedAt,
+    this.id = Isar.autoIncrement,
     this.endTime,
     this.goals = 0,
     this.assists = 0,
@@ -165,7 +170,10 @@ class Match {
 
   @override
   String toString() {
-    return 'Match(id: $id, childId: $childId, goals: $goals, assists: $assists, isInProgress: $isInProgress)';
+    return (
+      'Match(id: $id, childId: $childId, goals: $goals, '
+      'assists: $assists, isInProgress: $isInProgress)'
+    );
   }
 
   @override
@@ -191,8 +199,14 @@ class MatchStats {
   factory MatchStats.fromMatches(final List<Match> matches) {
     return MatchStats(
       totalMatches: matches.length,
-      totalGoals: matches.fold(0, (final sum, final match) => sum + match.goals),
-      totalAssists: matches.fold(0, (final sum, final match) => sum + match.assists),
+      totalGoals: matches.fold(
+        0,
+        (final sum, final match) => sum + match.goals,
+      ),
+      totalAssists: matches.fold(
+        0,
+        (final sum, final match) => sum + match.assists,
+      ),
     );
   }
   final int totalMatches;
@@ -214,6 +228,9 @@ class MatchStats {
 
   @override
   String toString() {
-    return 'MatchStats(matches: $totalMatches, goals: $totalGoals, assists: $totalAssists)';
+    return (
+      'MatchStats(matches: $totalMatches, goals: $totalGoals, '
+      'assists: $totalAssists)'
+    );
   }
 }

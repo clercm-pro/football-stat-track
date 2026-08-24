@@ -176,7 +176,7 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
                         onPressed: () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                          side: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -357,7 +357,7 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 12,
-              color: Colors.white.withOpacity(0.6),
+              color: Colors.white.withValues(alpha: 0.6),
               fontWeight: FontWeight.bold,
             ),
           ),

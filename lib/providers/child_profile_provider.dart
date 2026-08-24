@@ -108,7 +108,8 @@ class ChildProfileNotifier extends StateNotifier<List<ChildProfile>> {
 
 /// Child Profiles Provider
 /// Watches the list of child profiles
-final childProfilesProvider = StateNotifierProvider<ChildProfileNotifier, List<ChildProfile>>(
+final childProfilesProvider =
+    StateNotifierProvider<ChildProfileNotifier, List<ChildProfile>>(
   (final ref) {
     final collection = ref.watch(childProfileCollectionProvider);
     final notifier = ChildProfileNotifier(collection);
@@ -126,7 +127,7 @@ final selectedChildProfileProvider = StateProvider<ChildProfile?>(
 /// Child Profile by ID Provider
 /// Gets a specific profile by ID
 final childProfileProvider = Provider.family<ChildProfile?, Id>(
-  (final ref, final Id profileId) {
+  (final ref, final profileId) {
     final profiles = ref.watch(childProfilesProvider);
     try {
       return profiles.firstWhere((final p) => p.id == profileId);

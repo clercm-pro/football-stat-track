@@ -10,7 +10,10 @@ part 'child_profile.g.dart';
 class ChildProfile {
 
   ChildProfile({
-    required this.nickname, required this.createdAt, required this.updatedAt, this.id = Isar.autoIncrement,
+    required this.nickname,
+    required this.createdAt,
+    required this.updatedAt,
+    this.id = Isar.autoIncrement,
     this.firstName,
     this.lastName,
     this.birthYear,
@@ -82,7 +85,9 @@ class ChildProfile {
 
   /// Calculate age from birth year
   int? get age {
-    if (birthYear == null) return null;
+    if (birthYear == null) {
+      return null;
+    }
     return DateTime.now().year - birthYear!;
   }
 
@@ -130,7 +135,9 @@ class ChildProfile {
 
   @override
   bool operator ==(final Object other) {
-    if (identical(this, other)) return true;
+    if (identical(this, other)) {
+      return true;
+    }
     return other is ChildProfile && other.id == id;
   }
 

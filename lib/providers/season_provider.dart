@@ -93,8 +93,9 @@ class SeasonNotifier extends StateNotifier<List<Season>> {
     // Find the most recent season that is current or in the past
     Season? currentSeason;
     for (final season in state) {
-      if (season.isCurrent)
+      if (season.isCurrent) {
         return season;
+      }
       if (season.endYear <= now.year &&
           (currentSeason == null ||
               season.startYear > currentSeason.startYear)) {
@@ -103,15 +104,17 @@ class SeasonNotifier extends StateNotifier<List<Season>> {
     }
     
     // If no season found, return the most recent
-    if (state.isNotEmpty)
+    if (state.isNotEmpty) {
       return state.first;
+    }
     return null;
   }
 
   /// Get most recent season
   Season? getMostRecentSeason() {
-    if (state.isEmpty)
+    if (state.isEmpty) {
       return null;
+    }
     return state.first; // Already sorted by startYear descending
   }
 }

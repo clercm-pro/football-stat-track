@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 /// Call this method at the beginning of main, before calling runApp.
 void setupErrorHandling() {
   // 1. Flutter framework errors (e.g., widget build errors)
-  FlutterError.onError = (details) {
+  FlutterError.onError = (final details) {
     // Log to console in debug mode
     if (kDebugMode) {
       debugPrint(
@@ -25,14 +25,16 @@ void setupErrorHandling() {
       debugPrint('Library: ${details.library}');
       debugPrint('Context: ${details.context}');
       debugPrintStack(stackTrace: details.stack);
-      debugPrint('═══════════════════════════════════════════════════════════\n');
+      debugPrint(
+        '═══════════════════════════════════════════════════════════\n',
+      );
     }
 
     _logErrorToCustomService(details);
   };
 
   // 2. Platform errors
-  PlatformDispatcher.instance.onError = (error, stack) {
+  PlatformDispatcher.instance.onError = (final error, final stack) {
     if (kDebugMode) {
       debugPrint(
         '═══════════════════════════════════════════════════════════',
@@ -43,7 +45,9 @@ void setupErrorHandling() {
       );
       debugPrint('Error: $error');
       debugPrintStack(stackTrace: stack);
-      debugPrint('═══════════════════════════════════════════════════════════\n');
+      debugPrint(
+        '═══════════════════════════════════════════════════════════\n',
+      );
     }
 
     _logErrorToCustomService(
@@ -59,7 +63,7 @@ void setupErrorHandling() {
   };
 
   // 3. Custom error widget
-  ErrorWidget.builder = (details) {
+  ErrorWidget.builder = (final details) {
     if (kDebugMode) {
       return ErrorWidget(details);
     }
@@ -68,14 +72,14 @@ void setupErrorHandling() {
 }
 
 /// Log error to custom service.
-void _logErrorToCustomService(FlutterErrorDetails details) {
+void _logErrorToCustomService(final FlutterErrorDetails details) {
   if (!kDebugMode) {
     // Implement production error logging here.
   }
 }
 
 /// Build a user-friendly error widget for production.
-Widget _buildProductionErrorWidget(FlutterErrorDetails details) {
+Widget _buildProductionErrorWidget(final FlutterErrorDetails details) {
   return Center(
     child: Material(
       color: Colors.transparent,

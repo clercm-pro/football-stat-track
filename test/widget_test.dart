@@ -8,7 +8,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:football_stat_track/main.dart';
 import 'package:football_stat_track/app.dart';
 
 void main() {

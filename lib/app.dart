@@ -9,7 +9,7 @@ class StatTrackApp extends StatelessWidget {
   const StatTrackApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return MaterialApp(
       title: 'StatTrack',
       theme: AppColors.themeData,

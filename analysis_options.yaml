@@ -102,9 +102,6 @@ linter:
     - camel_case_types
     - lines_longer_than_80_chars
     - flutter_style_todos
-    - prefer_const_constructors
     - sort_child_properties_last
     - sort_constructors_first
     - sort_unnamed_constructors_first
-    - "**/*.g.dart"
-    - "**/*.freezed.dart"

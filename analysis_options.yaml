@@ -3,6 +3,7 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - build/**
+<<<<<<< HEAD
     - .dart_tool/**
     - android/**
     - ios/**
@@ -106,3 +107,7 @@ linter:
     - sort_child_properties_last
     - sort_constructors_first
     - sort_unnamed_constructors_first
+=======
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+>>>>>>> 688eb3e39449d2564d3a349cba93741f523c61b5

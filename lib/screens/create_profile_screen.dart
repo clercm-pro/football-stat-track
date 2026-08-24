@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:isar/isar.dart';
 import 'package:football_stat_track/config/colors.dart';
 import 'package:football_stat_track/models/child_profile.dart';
 import 'package:football_stat_track/providers/child_profile_provider.dart';
@@ -16,9 +15,7 @@ class CreateProfileScreen extends ConsumerStatefulWidget {
   const CreateProfileScreen({super.key});
 
   @override
-  ConsumerState<CreateProfileScreen> createState() {
-    return _CreateProfileScreenState();
-  }
+  ConsumerState<CreateProfileScreen> createState() => _CreateProfileScreenState();
 }
 
 class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
@@ -89,9 +86,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
       );
       
       // Add profile via provider
-      final addedProfile = await ref
-          .read(childProfilesProvider.notifier)
-          .addProfile(profile);
+      final addedProfile = await ref.read(childProfilesProvider.notifier).addProfile(profile);
       
       if (mounted) {
         Navigator.pop(context, addedProfile);
@@ -101,15 +96,13 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
 
   /// Calculate age from birth year
   String? _calculateAgeDisplay() {
-    if (_birthYearController.text.isEmpty) {
-      return null;
-    }
+    if (_birthYearController.text.isEmpty) return null;
     
     try {
       final birthYear = int.parse(_birthYearController.text);
       final age = DateTime.now().year - birthYear;
       return '$age years old';
-    } on FormatException {
+    } catch (e) {
       return null;
     }
   }
@@ -199,7 +192,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                           padding: const EdgeInsets.only(left: 8),
                           child: Text(
                             _calculateAgeDisplay()!,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 14,
                               color: AppColors.accent,
@@ -207,7 +200,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                           ),
                         )
                       : null,
-                  validator: (final value) {
+                  validator: (value) {
                     if (value != null && value.isNotEmpty) {
                       final year = int.tryParse(value);
                       if (year == null) {
@@ -235,16 +228,14 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                         onPressed: () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          side: BorderSide(
-                            color: Colors.white.withValues(alpha: 0.3),
-                          ),
+                          side: BorderSide(color: Colors.white.withOpacity(0.3)),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           'CANCEL',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -268,9 +259,9 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                           ),
                           elevation: 4,
                         ),
-                        child: const Text(
+                        child: Text(
                           'SAVE PROFILE',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -300,7 +291,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
             color: _avatarColor,
             shape: BoxShape.circle,
             border: Border.all(
-              color: Colors.white.withValues(alpha: 0.3),
+              color: Colors.white.withOpacity(0.3),
               width: 3,
             ),
             boxShadow: [
@@ -324,12 +315,12 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'Profile Avatar',
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 14,
-            color: Colors.white.withValues(alpha: 0.6),
+            color: Colors.white.withOpacity(0.6),
           ),
         ),
       ],
@@ -350,12 +341,12 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text(
+        Text(
           'Avatar Color',
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 14,
-            color: Colors.white.withValues(alpha: 0.7),
+            color: Colors.white.withOpacity(0.7),
           ),
         ),
         const SizedBox(height: 8),
@@ -378,7 +369,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: color.withValues(alpha: 0.3),
+                    color: color.withOpacity(0.3),
                     blurRadius: 5,
                     offset: const Offset(0, 2),
                   ),
@@ -413,7 +404,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 14,
             fontWeight: FontWeight.bold,
@@ -430,16 +421,14 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
             color: Colors.white,
           ),
           decoration: InputDecoration(
-            prefixIcon: icon != null
-                ? Icon(icon, color: AppColors.accent)
-                : null,
+            prefixIcon: icon != null ? Icon(icon, color: AppColors.accent) : null,
             suffixIcon: suffix,
             filled: true,
             fillColor: AppColors.surfaceLight,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(
-                color: Colors.white.withValues(alpha: 0.3),
+                color: Colors.white.withOpacity(0.3),
               ),
             ),
             enabledBorder: OutlineInputBorder(
@@ -499,14 +488,14 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
       ),
       child: const Row(
         children: [
-          const Icon(
+          Icon(
             Icons.info_outline,
             size: 20,
             color: AppColors.primary,
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
           Expanded(
-            child: const Text(
+            child: Text(
               'You can create up to 4 profiles per device',
               style: TextStyle(
                 fontFamily: 'Roboto',

@@ -15,7 +15,8 @@ class CreateProfileScreen extends ConsumerStatefulWidget {
   const CreateProfileScreen({super.key});
 
   @override
-  ConsumerState<CreateProfileScreen> createState() => _CreateProfileScreenState();
+  ConsumerState<CreateProfileScreen> createState() =>
+      _CreateProfileScreenState();
 }
 
 class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
@@ -86,7 +87,9 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
       );
       
       // Add profile via provider
-      final addedProfile = await ref.read(childProfilesProvider.notifier).addProfile(profile);
+      final addedProfile = await ref
+          .read(childProfilesProvider.notifier)
+          .addProfile(profile);
       
       if (mounted) {
         Navigator.pop(context, addedProfile);
@@ -96,13 +99,15 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
 
   /// Calculate age from birth year
   String? _calculateAgeDisplay() {
-    if (_birthYearController.text.isEmpty) return null;
+    if (_birthYearController.text.isEmpty) {
+      return null;
+    }
     
     try {
       final birthYear = int.parse(_birthYearController.text);
       final age = DateTime.now().year - birthYear;
       return '$age years old';
-    } catch (e) {
+    } on Exception {
       return null;
     }
   }
@@ -192,7 +197,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                           padding: const EdgeInsets.only(left: 8),
                           child: Text(
                             _calculateAgeDisplay()!,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 14,
                               color: AppColors.accent,
@@ -200,7 +205,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                           ),
                         )
                       : null,
-                  validator: (value) {
+                  validator: (final value) {
                     if (value != null && value.isNotEmpty) {
                       final year = int.tryParse(value);
                       if (year == null) {
@@ -228,12 +233,14 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                         onPressed: () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                          side: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.3),
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: Text(
+                        child: const Text(
                           'CANCEL',
                           style: TextStyle(
                             fontFamily: 'Roboto',
@@ -259,7 +266,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                           ),
                           elevation: 4,
                         ),
-                        child: Text(
+                        child: const Text(
                           'SAVE PROFILE',
                           style: TextStyle(
                             fontFamily: 'Roboto',
@@ -291,7 +298,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
             color: _avatarColor,
             shape: BoxShape.circle,
             border: Border.all(
-              color: Colors.white.withOpacity(0.3),
+              color: Colors.white.withValues(alpha: 0.3),
               width: 3,
             ),
             boxShadow: [
@@ -320,7 +327,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 14,
-            color: Colors.white.withOpacity(0.6),
+            color: Colors.white.withValues(alpha: 0.6),
           ),
         ),
       ],
@@ -346,14 +353,14 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 14,
-            color: Colors.white.withOpacity(0.7),
+            color: Colors.white.withValues(alpha: 0.7),
           ),
         ),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: colors.map((color) => GestureDetector(
+          children: colors.map((final color) => GestureDetector(
             onTap: () => _selectAvatarColor(color),
             child: Container(
               width: 40,
@@ -369,7 +376,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: color.withOpacity(0.3),
+                    color: color.withValues(alpha: 0.3),
                     blurRadius: 5,
                     offset: const Offset(0, 2),
                   ),
@@ -404,7 +411,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'Roboto',
             fontSize: 14,
             fontWeight: FontWeight.bold,
@@ -415,20 +422,22 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'Roboto',
             fontSize: 16,
             color: Colors.white,
           ),
           decoration: InputDecoration(
-            prefixIcon: icon != null ? Icon(icon, color: AppColors.accent) : null,
+            prefixIcon: icon != null
+                ? Icon(icon, color: AppColors.accent)
+                : null,
             suffixIcon: suffix,
             filled: true,
             fillColor: AppColors.surfaceLight,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(
-                color: Colors.white.withOpacity(0.3),
+                color: Colors.white.withValues(alpha: 0.3),
               ),
             ),
             enabledBorder: OutlineInputBorder(
@@ -463,7 +472,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
               fontSize: 14,
               color: Colors.white.withValues(alpha: 0.4),
             ),
-            errorStyle: TextStyle(
+            errorStyle: const TextStyle(
               fontFamily: 'Roboto',
               fontSize: 12,
               color: AppColors.error,

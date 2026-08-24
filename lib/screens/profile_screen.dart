@@ -18,7 +18,7 @@ import 'package:football_stat_track/screens/match_screen.dart';
 /// - Match history
 class ProfileScreen extends ConsumerWidget {
 
-  const ProfileScreen({super.key, required this.profile});
+  const ProfileScreen({required this.profile, super.key});
   final ChildProfile profile;
 
   @override
@@ -113,7 +113,7 @@ class ProfileScreen extends ConsumerWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppColors.primary.withOpacity(0.3),
+            AppColors.primary.withValues(alpha: 0.3),
             AppColors.surface,
           ],
         ),
@@ -251,7 +251,7 @@ class ProfileScreen extends ConsumerWidget {
           'Select Season',
           style: TextStyle(
             fontFamily: 'Roboto',
-            color: Colors.white.withOpacity(0.6),
+            color: Colors.white.withValues(alpha: 0.6),
           ),
         ),
       ),
@@ -271,7 +271,7 @@ class ProfileScreen extends ConsumerWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

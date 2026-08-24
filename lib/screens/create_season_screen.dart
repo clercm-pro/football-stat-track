@@ -45,7 +45,7 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
   }
 
   /// Parse season string into start and end years
-  void _parseSeason(String value) {
+  void _parseSeason(final String value) {
     // Remove all non-digit characters
     final digits = value.replaceAll(RegExp('[^0-9]'), '');
     
@@ -72,7 +72,7 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
   }
 
   /// Validate season format
-  String? _validateSeason(String? value) {
+  String? _validateSeason(final String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Season is required';
     }
@@ -119,7 +119,7 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.surface,
       appBar: AppBar(
@@ -388,7 +388,7 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
 
   /// Build quick select options
   Widget _buildQuickSelect() {
-    final years = List.generate(5, (index) => _currentYear - index);
+    final years = List.generate(5, (final index) => _currentYear - index);
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -407,7 +407,7 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
           spacing: 8,
           runSpacing: 8,
           alignment: WrapAlignment.center,
-          children: years.map((year) => ElevatedButton(
+          children: years.map((final year) => ElevatedButton(
             onPressed: () {
               setState(() {
                 _startYear = year;

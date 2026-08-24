@@ -93,7 +93,7 @@ class ChildProfileNotifier extends StateNotifier<List<ChildProfile>> {
   /// Get profile by ID
   ChildProfile? getProfile(final Id profileId) {
     try {
-      return state.firstWhere((p) => p.id == profileId);
+      return state.firstWhere((final p) => p.id == profileId);
     } catch (e) {
       return null;
     }
@@ -126,10 +126,10 @@ final selectedChildProfileProvider = StateProvider<ChildProfile?>(
 /// Child Profile by ID Provider
 /// Gets a specific profile by ID
 final childProfileProvider = Provider.family<ChildProfile?, Id>(
-  (ref, Id profileId) {
+  (final ref, final Id profileId) {
     final profiles = ref.watch(childProfilesProvider);
     try {
-      return profiles.firstWhere((p) => p.id == profileId);
+      return profiles.firstWhere((final p) => p.id == profileId);
     } catch (e) {
       return null;
     }

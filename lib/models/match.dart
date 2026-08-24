@@ -90,15 +90,15 @@ class Match {
 
   /// Copy with updated values
   Match copyWith({
-    Id? id,
-    int? childId,
-    int? seasonId,
-    DateTime? startTime,
-    DateTime? endTime,
-    int? goals,
-    int? assists,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    final Id? id,
+    final int? childId,
+    final int? seasonId,
+    final DateTime? startTime,
+    final DateTime? endTime,
+    final int? goals,
+    final int? assists,
+    final DateTime? createdAt,
+    final DateTime? updatedAt,
   }) {
     return Match(
       id: id ?? this.id,
@@ -174,7 +174,7 @@ class Match {
   }
 
   @override
-  bool operator ==(Object other) {
+  bool operator ==(final Object other) {
     if (identical(this, other)) return true;
     return other is Match && other.id == id;
   }
@@ -206,9 +206,9 @@ class MatchStats {
 
   /// Copy with updated values
   MatchStats copyWith({
-    int? totalMatches,
-    int? totalGoals,
-    int? totalAssists,
+    final int? totalMatches,
+    final int? totalGoals,
+    final int? totalAssists,
   }) {
     return MatchStats(
       totalMatches: totalMatches ?? this.totalMatches,

@@ -38,9 +38,10 @@ class MatchNotifier extends StateNotifier<List<Match>> {
         .childIdEqualTo(match.childId)
         .endTimeIsNull()
         .findFirst();
-    if (inProgress != null)
+    if (inProgress != null) {
       return null;
-    
+    }
+
     // Save to database
     await _collection.put(match);
     
@@ -55,9 +56,10 @@ class MatchNotifier extends StateNotifier<List<Match>> {
     final bool increment = true,
   }) async {
     final match = await _collection.get(matchId);
-    if (match == null)
+    if (match == null) {
       return null;
-    
+    }
+
     final updatedMatch = increment
         ? match.addGoal()
         : match.removeGoal();
@@ -76,9 +78,10 @@ class MatchNotifier extends StateNotifier<List<Match>> {
     final bool increment = true,
   }) async {
     final match = await _collection.get(matchId);
-    if (match == null)
+    if (match == null) {
       return null;
-    
+    }
+
     final updatedMatch = increment
         ? match.addAssist()
         : match.removeAssist();
@@ -94,9 +97,10 @@ class MatchNotifier extends StateNotifier<List<Match>> {
   /// End a match
   Future<Match?> endMatch(final Id matchId) async {
     final match = await _collection.get(matchId);
-    if (match == null)
+    if (match == null) {
       return null;
-    
+    }
+
     final updatedMatch = match.endMatch();
     
     // Save to database

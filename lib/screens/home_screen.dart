@@ -75,7 +75,7 @@ class HomeScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.2),
+              color: AppColors.primary.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -91,7 +91,7 @@ class HomeScreen extends ConsumerWidget {
               fontFamily: 'Roboto',
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withValues(alpha: 0.8),
             ),
           ),
           const SizedBox(height: 8),
@@ -100,7 +100,7 @@ class HomeScreen extends ConsumerWidget {
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 14,
-              color: Colors.white.withOpacity(0.6),
+              color: Colors.white.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -172,10 +172,14 @@ class HomeScreen extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () async {
+              final dialogContext = context;
               await ref
                   .read(childProfilesProvider.notifier)
                   .deleteProfile(profile.id);
-              Navigator.pop(context);
+              if (!dialogContext.mounted) {
+                return;
+              }
+              Navigator.pop(dialogContext);
             },
             child: const Text(
               'Delete',

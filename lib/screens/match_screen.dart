@@ -208,7 +208,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
             onPressed: () async {
               // Save match and return
               if (_matchId != null) {
-                await ref.read(matchesProvider.notifier).endMatch(_matchId!);
+                await ref
+                    .read(matchesProvider.notifier)
+                    .endMatch(_matchId!);
+              }
+              if (!context.mounted) {
+                return;
               }
               Navigator.popUntil(context, (final route) => route.isFirst);
             },
@@ -250,7 +255,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 12,
-            color: Colors.white.withOpacity(0.6),
+            color: Colors.white.withValues(alpha: 0.6),
           ),
         ),
       ],
@@ -295,7 +300,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
             color: Colors.white,
             tooltip: 'End Match',
             style: IconButton.styleFrom(
-              backgroundColor: Colors.red.withOpacity(0.3),
+              backgroundColor: Colors.red.withValues(alpha: 0.3),
             ),
           ),
         ],
@@ -423,12 +428,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
           color: AppColors.surfaceLight,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: borderColor.withOpacity(0.5),
+            color: borderColor.withValues(alpha: 0.5),
             width: 2,
           ),
           boxShadow: [
             BoxShadow(
-              color: borderColor.withOpacity(0.2),
+              color: borderColor.withValues(alpha: 0.2),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -479,7 +484,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
       decoration: BoxDecoration(
         color: AppColors.surfaceDark,
         border: Border.all(
-          color: AppColors.primary.withOpacity(0.2),
+          color: AppColors.primary.withValues(alpha: 0.2),
         ),
       ),
       child: Row(
@@ -488,12 +493,18 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
           // Cancel button
           OutlinedButton.icon(
             onPressed: () async {
+              final navigatorContext = context;
               _timerController.stop();
               // Delete the match if it was created
               if (_matchId != null) {
-                await ref.read(matchesProvider.notifier).deleteMatch(_matchId!);
+                await ref
+                    .read(matchesProvider.notifier)
+                    .deleteMatch(_matchId!);
               }
-              Navigator.pop(context);
+              if (!navigatorContext.mounted) {
+                return;
+              }
+              Navigator.pop(navigatorContext);
             },
             icon: const Icon(Icons.close, color: AppColors.error),
             label: const Text(
@@ -518,7 +529,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 12,
-              color: Colors.white.withOpacity(0.6),
+              color: Colors.white.withValues(alpha: 0.6),
             ),
           ),
           // End match button

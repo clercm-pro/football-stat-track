@@ -335,7 +335,10 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   /// Build start match button
-  Widget _buildStartMatchButton(final BuildContext context, final WidgetRef ref) {
+  Widget _buildStartMatchButton(
+    final BuildContext context,
+    final WidgetRef ref,
+  ) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ElevatedButton.icon(
@@ -346,7 +349,9 @@ class ProfileScreen extends ConsumerWidget {
           if (hasMatchInProgress) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('A match is already in progress for this profile'),
+                content: Text(
+                  'A match is already in progress for this profile',
+                ),
                 backgroundColor: AppColors.error,
               ),
             );
@@ -494,7 +499,7 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<ChildProfile>('profile', profile));
   }

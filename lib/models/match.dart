@@ -76,7 +76,9 @@ class Match {
   /// Duration is not supported by Isar, so we use @Ignore annotation
   @Ignore()
   Duration? get duration {
-    if (endTime == null) return null;
+    if (endTime == null) {
+      return null;
+    }
     return endTime!.difference(startTime);
   }
 
@@ -84,7 +86,9 @@ class Match {
   /// This is a computed property, not stored in Isar
   @Ignore()
   int? get durationInMinutes {
-    if (endTime == null) return null;
+    if (endTime == null) {
+      return null;
+    }
     return endTime!.difference(startTime).inMinutes;
   }
 
@@ -170,15 +174,15 @@ class Match {
 
   @override
   String toString() {
-    return (
-      'Match(id: $id, childId: $childId, goals: $goals, '
-      'assists: $assists, isInProgress: $isInProgress)'
-    );
+    return 'Match(id: $id, childId: $childId, goals: $goals, '
+        'assists: $assists, isInProgress: $isInProgress)';
   }
 
   @override
   bool operator ==(final Object other) {
-    if (identical(this, other)) return true;
+    if (identical(this, other)) {
+      return true;
+    }
     return other is Match && other.id == id;
   }
 
@@ -228,9 +232,7 @@ class MatchStats {
 
   @override
   String toString() {
-    return (
-      'MatchStats(matches: $totalMatches, goals: $totalGoals, '
-      'assists: $totalAssists)'
-    );
+    return 'MatchStats(matches: $totalMatches, goals: $totalGoals, '
+        'assists: $totalAssists)';
   }
 }

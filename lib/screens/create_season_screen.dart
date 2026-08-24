@@ -110,7 +110,9 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
       );
       
       // Add season via provider
-      final addedSeason = await ref.read(seasonsProvider.notifier).addSeason(season);
+      final addedSeason = await ref
+          .read(seasonsProvider.notifier)
+          .addSeason(season);
       
       if (mounted) {
         Navigator.pop(context, addedSeason);
@@ -176,7 +178,9 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
                         onPressed: () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          side: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
+                          side: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.3),
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),

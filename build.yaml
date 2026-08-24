@@ -1,11 +1,7 @@
 targets:
   $default:
     builders:
-      isar_generator:isar_generator:
-        generate_for:
-          - lib/models/child_profile.dart
-          - lib/models/season.dart
-          - lib/models/match.dart
+      isar_generator:
         options:
           # Optional: specify the output directory for generated files
           # output_directory: lib/generated

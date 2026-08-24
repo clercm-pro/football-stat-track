@@ -1,5 +1,4 @@
 import 'package:isar/isar.dart';
-import 'package:uuid/uuid.dart';
 
 part 'match.g.dart';
 
@@ -7,14 +6,56 @@ part 'match.g.dart';
 /// 
 /// Isar collection for local storage
 /// Tracks goals, assists, and duration for a specific profile and season
-@collection
+@Collection()
 class Match {
-  @Id()
-  final String id;
+
+  Match({
+    this.id = Isar.autoIncrement,
+    required this.childId,
+    required this.seasonId,
+    required this.startTime,
+    this.endTime,
+    this.goals = 0,
+    this.assists = 0,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  /// Create a new match with auto-increment ID
+  factory Match.newMatch({
+    required final int childId,
+    required final int seasonId,
+  }) {
+    return Match(
+      childId: childId,
+      seasonId: seasonId,
+      startTime: DateTime.now(),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  /// Create from JSON
+  factory Match.fromJson(final Map<String, dynamic> json) {
+    return Match(
+      id: json['id'] as int? ?? Isar.autoIncrement,
+      childId: json['childId'] as int,
+      seasonId: json['seasonId'] as int,
+      startTime: DateTime.parse(json['startTime'] as String),
+      endTime: json['endTime'] != null 
+          ? DateTime.parse(json['endTime'] as String) 
+          : null,
+      goals: json['goals'] as int,
+      assists: json['assists'] as int,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+    );
+  }
+  Id id = Isar.autoIncrement;
   
-  final String childId;
+  final int childId;
   
-  final String seasonId;
+  final int seasonId;
   
   final DateTime startTime;
   
@@ -28,57 +69,30 @@ class Match {
   
   final DateTime updatedAt;
 
-  Match({
-    required this.id,
-    required this.childId,
-    required this.seasonId,
-    required this.startTime,
-    this.endTime,
-    this.goals = 0,
-    this.assists = 0,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  /// Create a new match with generated ID
-  factory Match.newMatch({
-    required String childId,
-    required String seasonId,
-  }) {
-    return Match(
-      id: const Uuid().v4(),
-      childId: childId,
-      seasonId: seasonId,
-      startTime: DateTime.now(),
-      endTime: null,
-      goals: 0,
-      assists: 0,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
-  }
-
   /// Check if match is currently in progress
   bool get isInProgress => endTime == null;
 
-  /// Calculate duration
+  /// Calculate duration in seconds
+  /// Duration is not supported by Isar, so we use @Ignore annotation
+  @Ignore()
   Duration? get duration {
     if (endTime == null) return null;
     return endTime!.difference(startTime);
   }
 
-  /// Duration in minutes (rounded down)
+  /// Duration in minutes (rounded down) - computed from endTime/startTime
+  /// This is a computed property, not stored in Isar
+  @Ignore()
   int? get durationInMinutes {
-    final dur = duration;
-    if (dur == null) return null;
-    return dur.inMinutes;
+    if (endTime == null) return null;
+    return endTime!.difference(startTime).inMinutes;
   }
 
   /// Copy with updated values
   Match copyWith({
-    String? id,
-    String? childId,
-    String? seasonId,
+    Id? id,
+    int? childId,
+    int? seasonId,
     DateTime? startTime,
     DateTime? endTime,
     int? goals,
@@ -154,23 +168,6 @@ class Match {
     };
   }
 
-  /// Create from JSON
-  factory Match.fromJson(Map<String, dynamic> json) {
-    return Match(
-      id: json['id'] as String,
-      childId: json['childId'] as String,
-      seasonId: json['seasonId'] as String,
-      startTime: DateTime.parse(json['startTime'] as String),
-      endTime: json['endTime'] != null 
-          ? DateTime.parse(json['endTime'] as String) 
-          : null,
-      goals: json['goals'] as int,
-      assists: json['assists'] as int,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-    );
-  }
-
   @override
   String toString() {
     return 'Match(id: $id, childId: $childId, goals: $goals, assists: $assists, isInProgress: $isInProgress)';
@@ -188,9 +185,6 @@ class Match {
 
 /// MatchStats - Computed statistics from multiple matches
 class MatchStats {
-  final int totalMatches;
-  final int totalGoals;
-  final int totalAssists;
 
   MatchStats({
     this.totalMatches = 0,
@@ -199,13 +193,16 @@ class MatchStats {
   });
 
   /// Create from list of matches
-  factory MatchStats.fromMatches(List<Match> matches) {
+  factory MatchStats.fromMatches(final List<Match> matches) {
     return MatchStats(
       totalMatches: matches.length,
-      totalGoals: matches.fold(0, (sum, match) => sum + match.goals),
-      totalAssists: matches.fold(0, (sum, match) => sum + match.assists),
+      totalGoals: matches.fold(0, (final sum, final match) => sum + match.goals),
+      totalAssists: matches.fold(0, (final sum, final match) => sum + match.assists),
     );
   }
+  final int totalMatches;
+  final int totalGoals;
+  final int totalAssists;
 
   /// Copy with updated values
   MatchStats copyWith({

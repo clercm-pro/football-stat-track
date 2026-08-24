@@ -1,10 +1,11 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../config/colors.dart';
-import '../models/child_profile.dart';
-import '../providers/child_profile_provider.dart';
-import 'create_profile_screen.dart';
-import 'profile_screen.dart';
+import 'package:football_stat_track/config/colors.dart';
+import 'package:football_stat_track/models/child_profile.dart';
+import 'package:football_stat_track/providers/child_profile_provider.dart';
+import 'package:football_stat_track/screens/create_profile_screen.dart';
+import 'package:football_stat_track/screens/profile_screen.dart';
 
 /// Home Screen - Displays the list of child profiles
 /// 
@@ -17,7 +18,7 @@ class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(final BuildContext context, final WidgetRef ref) {
     final profiles = ref.watch(childProfilesProvider);
     
     return Scaffold(
@@ -53,7 +54,7 @@ class HomeScreen extends ConsumerWidget {
             Expanded(
               child: profiles.isEmpty
                   ? _buildEmptyState()
-                  : _buildProfileGrid(profiles, context),
+                  : _buildProfileGrid(profiles, context, ref),
             ),
             // Footer with Deerflow mention
             _buildFooter(),
@@ -74,7 +75,7 @@ class HomeScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.2),
+              color: AppColors.primary.withOpacity(0.2),
               shape: BoxShape.circle,
             ),
             child: const Icon(
@@ -90,7 +91,7 @@ class HomeScreen extends ConsumerWidget {
               fontFamily: 'Roboto',
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.white.withValues(alpha: 0.8),
+              color: Colors.white.withOpacity(0.8),
             ),
           ),
           const SizedBox(height: 8),
@@ -99,7 +100,7 @@ class HomeScreen extends ConsumerWidget {
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 14,
-              color: Colors.white.withValues(alpha: 0.6),
+              color: Colors.white.withOpacity(0.6),
             ),
           ),
         ],
@@ -108,7 +109,11 @@ class HomeScreen extends ConsumerWidget {
   }
 
   /// Build profile grid (2 columns)
-  Widget _buildProfileGrid(List<ChildProfile> profiles, BuildContext context) {
+  Widget _buildProfileGrid(
+    final List<ChildProfile> profiles,
+    final BuildContext context,
+    final WidgetRef ref,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: GridView.builder(
@@ -119,7 +124,7 @@ class HomeScreen extends ConsumerWidget {
           childAspectRatio: 0.8,
         ),
         itemCount: profiles.length,
-        itemBuilder: (context, index) {
+        itemBuilder: (final context, final index) {
           final profile = profiles[index];
           return ProfileCard(
             profile: profile,
@@ -127,45 +132,34 @@ class HomeScreen extends ConsumerWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfileScreen(profile: profile),
+                  builder: (final context) => ProfileScreen(profile: profile),
                 ),
               );
             },
-            onLongPress: () => _showDeleteDialog(context, profile),
+            onLongPress: () => _showDeleteDialog(context, ref, profile),
           );
         },
       ),
     );
   }
 
-  /// Build profile card
-  Widget _buildProfileCard(ChildProfile profile, BuildContext context) {
-    return ProfileCard(
-      profile: profile,
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProfileScreen(profile: profile),
-          ),
-        );
-      },
-      onLongPress: () => _showDeleteDialog(context, profile),
-    );
-  }
-
   /// Show delete confirmation dialog
-  void _showDeleteDialog(BuildContext context, ChildProfile profile) {
+  void _showDeleteDialog(
+    final BuildContext context,
+    final WidgetRef ref,
+    final ChildProfile profile,
+  ) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (final context) => AlertDialog(
         backgroundColor: AppColors.surface,
         title: const Text(
           'Delete Profile',
           style: TextStyle(color: Colors.white),
         ),
         content: Text(
-          'Are you sure you want to delete ${profile.nickname}? This action cannot be undone.',
+          'Are you sure you want to delete ${profile.nickname}? '
+          'This action cannot be undone.',
           style: const TextStyle(color: Colors.white),
         ),
         actions: [
@@ -178,7 +172,9 @@ class HomeScreen extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () async {
-              await ref.read(childProfilesProvider.notifier).deleteProfile(profile.id);
+              await ref
+                  .read(childProfilesProvider.notifier)
+                  .deleteProfile(profile.id);
               Navigator.pop(context);
             },
             child: const Text(
@@ -192,13 +188,13 @@ class HomeScreen extends ConsumerWidget {
   }
 
   /// Build add profile floating action button
-  Widget _buildAddButton(BuildContext context) {
+  Widget _buildAddButton(final BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const CreateProfileScreen(),
+            builder: (final context) => const CreateProfileScreen(),
           ),
         );
       },
@@ -218,36 +214,34 @@ class HomeScreen extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
+          Text(
             'Built with Flutter',
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 12,
-              color: Colors.white,
-              opacity: 0.6,
+              color: Colors.white.withValues(alpha: 0.6),
             ),
           ),
           // Deerflow branding - subtle mention
           GestureDetector(
             onTap: () {
-              // TODO: Open Deerflow link
+              // TODO(mickael): Open Deerflow link
             },
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
+                const Icon(
                   Icons.flash_on,
                   size: 14,
                   color: AppColors.accent,
                 ),
-                SizedBox(width: 4),
+                const SizedBox(width: 4),
                 Text(
                   'Deerflow',
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 12,
-                    color: Colors.white,
-                    opacity: 0.6,
+                    color: Colors.white.withValues(alpha: 0.6),
                   ),
                 ),
               ],
@@ -261,19 +255,19 @@ class HomeScreen extends ConsumerWidget {
 
 /// Profile Card Widget
 class ProfileCard extends StatelessWidget {
+
+  const ProfileCard({
+    required this.profile,
+    required this.onTap,
+    required this.onLongPress,
+    super.key,
+  });
   final ChildProfile profile;
   final VoidCallback onTap;
   final VoidCallback onLongPress;
 
-  const ProfileCard({
-    super.key,
-    required this.profile,
-    required this.onTap,
-    required this.onLongPress,
-  });
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Card(
       color: AppColors.surface,
       elevation: 4,
@@ -282,7 +276,6 @@ class ProfileCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
           color: AppColors.primary.withValues(alpha: 0.3),
-          width: 1,
         ),
       ),
       child: InkWell(
@@ -351,9 +344,8 @@ class ProfileCard extends StatelessWidget {
               ],
               const SizedBox(height: 8),
               // Stats
-              const Divider(
-                color: Colors.white,
-                opacity: 0.2,
+              Divider(
+                color: Colors.white.withValues(alpha: 0.2),
                 height: 1,
               ),
               const SizedBox(height: 8),
@@ -373,7 +365,11 @@ class ProfileCard extends StatelessWidget {
   }
 
   /// Build stat item for profile card
-  Widget _buildStatItem(IconData icon, String value, String label) {
+  Widget _buildStatItem(
+    final IconData icon,
+    final String value,
+    final String label,
+  ) {
     return Column(
       children: [
         Icon(
@@ -400,6 +396,16 @@ class ProfileCard extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<ChildProfile>('profile', profile));
+    properties.add(ObjectFlagProperty<VoidCallback>.has('onTap', onTap));
+    properties.add(
+      ObjectFlagProperty<VoidCallback>.has('onLongPress', onLongPress),
     );
   }
 }

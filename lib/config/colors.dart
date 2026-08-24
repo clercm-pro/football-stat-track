@@ -1,4 +1,4 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 
 /// AppColors - Color palette for StatTrack application
 /// 
@@ -64,7 +64,7 @@ class AppColors {
         color: textPrimary,
       ),
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       elevation: 4,
       margin: const EdgeInsets.all(8),
       shape: RoundedRectangleBorder(
@@ -95,7 +95,7 @@ class AppColors {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        side: const BorderSide(color: Colors.white, opacity: 0.3),
+        side: BorderSide(color: Colors.white.withOpacity(0.3)),
         textStyle: const TextStyle(
           fontFamily: 'Roboto',
           fontSize: 16,
@@ -108,11 +108,11 @@ class AppColors {
       fillColor: surfaceLight,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
+        borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.3)),
+        borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
@@ -130,7 +130,7 @@ class AppColors {
       hintStyle: TextStyle(
         fontFamily: 'Roboto',
         fontSize: 14,
-        color: textSecondary.withValues(alpha: 0.6),
+        color: textSecondary.withOpacity(0.6),
       ),
     ),
     iconTheme: const IconThemeData(
@@ -138,7 +138,7 @@ class AppColors {
       size: 24,
     ),
     dividerTheme: DividerThemeData(
-      color: Colors.white.withValues(alpha: 0.2),
+      color: Colors.white.withOpacity(0.2),
       thickness: 1,
       space: 1,
     ),

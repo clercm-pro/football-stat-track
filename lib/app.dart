@@ -1,6 +1,6 @@
-import 'package:material_ui/material_ui.dart';
-import 'config/colors.dart';
-import 'screens/home_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:football_stat_track/config/colors.dart';
+import 'package:football_stat_track/screens/home_screen.dart';
 
 /// StatTrackApp - Main application widget
 /// 

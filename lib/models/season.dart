@@ -1,5 +1,4 @@
 import 'package:isar/isar.dart';
-import 'package:uuid/uuid.dart';
 
 part 'season.g.dart';
 
@@ -7,10 +6,42 @@ part 'season.g.dart';
 /// 
 /// Isar collection for local storage
 /// A season runs from September to June and spans two years (e.g., 2026/2027)
-@collection
+@Collection()
 class Season {
-  @Id()
-  final String id;
+
+  Season({
+    this.id = Isar.autoIncrement,
+    required this.name,
+    required this.startYear,
+    required this.endYear,
+    required this.createdAt,
+  });
+
+  /// Create a new season with auto-increment ID
+  factory Season.newSeason({
+    required final int startYear,
+    required final int endYear,
+  }) {
+    final name = '$startYear/$endYear';
+    return Season(
+      name: name,
+      startYear: startYear,
+      endYear: endYear,
+      createdAt: DateTime.now(),
+    );
+  }
+
+  /// Create from JSON
+  factory Season.fromJson(final Map<String, dynamic> json) {
+    return Season(
+      id: json['id'] as int? ?? Isar.autoIncrement,
+      name: json['name'] as String,
+      startYear: json['startYear'] as int,
+      endYear: json['endYear'] as int,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+    );
+  }
+  Id id = Isar.autoIncrement;
   
   final String name;
   
@@ -20,26 +51,20 @@ class Season {
   
   final DateTime createdAt;
 
-  Season({
-    required this.id,
-    required this.name,
-    required this.startYear,
-    required this.endYear,
-    required this.createdAt,
-  });
-
-  /// Create a new season with generated ID
-  factory Season.newSeason({
-    required int startYear,
-    required int endYear,
+  /// Copy with updated values
+  Season copyWith({
+    Id? id,
+    String? name,
+    int? startYear,
+    int? endYear,
+    DateTime? createdAt,
   }) {
-    final name = '$startYear/${endYear}';
     return Season(
-      id: const Uuid().v4(),
-      name: name,
-      startYear: startYear,
-      endYear: endYear,
-      createdAt: DateTime.now(),
+      id: id ?? this.id,
+      name: name ?? this.name,
+      startYear: startYear ?? this.startYear,
+      endYear: endYear ?? this.endYear,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -98,17 +123,6 @@ class Season {
       'endYear': endYear,
       'createdAt': createdAt.toIso8601String(),
     };
-  }
-
-  /// Create from JSON
-  factory Season.fromJson(Map<String, dynamic> json) {
-    return Season(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      startYear: json['startYear'] as int,
-      endYear: json['endYear'] as int,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-    );
   }
 
   @override

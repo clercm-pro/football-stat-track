@@ -1,8 +1,8 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../config/colors.dart';
-import '../models/season.dart';
-import '../providers/season_provider.dart';
+import 'package:football_stat_track/config/colors.dart';
+import 'package:football_stat_track/models/season.dart';
+import 'package:football_stat_track/providers/season_provider.dart';
 
 /// Create Season Screen - Form to add a new sports season
 /// 
@@ -47,7 +47,7 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
   /// Parse season string into start and end years
   void _parseSeason(String value) {
     // Remove all non-digit characters
-    final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
+    final digits = value.replaceAll(RegExp('[^0-9]'), '');
     
     if (digits.length >= 4) {
       // Try to extract first 4 digits as start year
@@ -78,7 +78,7 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
     }
     
     // Try to parse
-    final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
+    final digits = value.replaceAll(RegExp('[^0-9]'), '');
     if (digits.length != 4 && digits.length != 8) {
       return 'Invalid format';
     }
@@ -103,7 +103,6 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       final season = Season(
-        id: '', // Will be generated
         name: _formatSeason(),
         startYear: _startYear!,
         endYear: _endYear!,
@@ -177,7 +176,7 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
                         onPressed: () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          side: const BorderSide(color: Colors.white, opacity: 0.3),
+                          side: BorderSide(color: Colors.white.withOpacity(0.3)),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -300,14 +299,12 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
                 color: Colors.white.withValues(alpha: 0.3),
-                width: 1,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
                 color: Colors.white.withValues(alpha: 0.3),
-                width: 1,
               ),
             ),
             focusedBorder: OutlineInputBorder(
@@ -321,7 +318,6 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
               borderRadius: BorderRadius.circular(12),
               borderSide: const BorderSide(
                 color: AppColors.error,
-                width: 1,
               ),
             ),
             hintText: 'YYYY/YYYY+1',
@@ -352,18 +348,16 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: AppColors.primary.withValues(alpha: 0.3),
-          width: 1,
         ),
       ),
       child: Column(
         children: [
-          const Text(
+          Text(
             'Preview',
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 12,
-              color: Colors.white,
-              opacity: 0.6,
+              color: Colors.white.withOpacity(0.6),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -434,12 +428,11 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
               ),
               side: BorderSide(
                 color: AppColors.primary.withValues(alpha: 0.3),
-                width: 1,
               ),
             ),
             child: Text(
               '$year/${year + 1}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
@@ -460,17 +453,16 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: AppColors.primary.withValues(alpha: 0.3),
-          width: 1,
         ),
       ),
-      child: Row(
+      child: const Row(
         children: [
           Icon(
             Icons.info_outline,
             size: 20,
             color: AppColors.primary,
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
           Expanded(
             child: Text(
               'A season runs from September to June. Format: YYYY/YYYY+1',

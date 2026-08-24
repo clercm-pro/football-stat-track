@@ -1,10 +1,12 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../config/colors.dart';
-import '../models/child_profile.dart';
-import '../models/season.dart';
-import '../providers/season_provider.dart';
-import 'match_screen.dart';
+import 'package:football_stat_track/config/colors.dart';
+import 'package:football_stat_track/models/child_profile.dart';
+import 'package:football_stat_track/models/season.dart';
+import 'package:football_stat_track/providers/season_provider.dart';
+import 'package:football_stat_track/providers/match_provider.dart';
+import 'package:football_stat_track/screens/match_screen.dart';
 
 /// Profile Screen - Displays details and stats for a specific profile
 /// 
@@ -15,14 +17,14 @@ import 'match_screen.dart';
 /// - Start match CTA
 /// - Match history
 class ProfileScreen extends ConsumerWidget {
-  final ChildProfile profile;
 
   const ProfileScreen({super.key, required this.profile});
+  final ChildProfile profile;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(final BuildContext context, final WidgetRef ref) {
     final seasons = ref.watch(seasonsProvider);
-    final selectedSeason = ref.watch(selectedSeasonProvider);
+    ref.watch(selectedSeasonProvider);
     
     return Scaffold(
       backgroundColor: AppColors.surface,
@@ -46,7 +48,10 @@ class ProfileScreen extends ConsumerWidget {
           // Home button
           IconButton(
             icon: const Icon(Icons.home),
-            onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
+            onPressed: () => Navigator.popUntil(
+              context,
+              (final route) => route.isFirst,
+            ),
             color: Colors.white,
             tooltip: 'Home',
           ),
@@ -69,7 +74,7 @@ class ProfileScreen extends ConsumerWidget {
             ),
             // Start match button
             SliverToBoxAdapter(
-              child: _buildStartMatchButton(context),
+              child: _buildStartMatchButton(context, ref),
             ),
             // Match history header
             const SliverToBoxAdapter(
@@ -89,8 +94,8 @@ class ProfileScreen extends ConsumerWidget {
             // Match history list
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) => _buildMatchHistoryItem(),
-                childCount: 5, // Example: 5 recent matches
+                (final context, final index) => _buildMatchHistoryItem(),
+                childCount: 5,
               ),
             ),
           ],
@@ -100,7 +105,7 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   /// Build profile hero section
-  Widget _buildProfileHero(BuildContext context) {
+  Widget _buildProfileHero(final BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -108,7 +113,7 @@ class ProfileScreen extends ConsumerWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppColors.primary.withValues(alpha: 0.3),
+            AppColors.primary.withOpacity(0.3),
             AppColors.surface,
           ],
         ),
@@ -118,8 +123,8 @@ class ProfileScreen extends ConsumerWidget {
           // Avatar with glow effect
           Container(
             padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
                 colors: [AppColors.accent, AppColors.secondary],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -142,8 +147,8 @@ class ProfileScreen extends ConsumerWidget {
               ),
               child: Center(
                 child: Text(
-                  profile.nickname.isNotEmpty 
-                      ? profile.nickname[0].toUpperCase() 
+                  profile.nickname.isNotEmpty
+                      ? profile.nickname[0].toUpperCase()
                       : '?',
                   style: const TextStyle(
                     fontFamily: 'Roboto',
@@ -181,7 +186,7 @@ class ProfileScreen extends ConsumerWidget {
           if (profile.birthYear != null) ...[
             Text(
               '${DateTime.now().year - profile.birthYear!} years old',
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 14,
                 color: AppColors.accent,
@@ -194,7 +199,10 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   /// Build season selector
-  Widget _buildSeasonSelector(List<Season> seasons, WidgetRef ref) {
+  Widget _buildSeasonSelector(
+    final List<Season> seasons,
+    final WidgetRef ref,
+  ) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -203,29 +211,30 @@ class ProfileScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: AppColors.primary.withValues(alpha: 0.3),
-          width: 1,
         ),
       ),
       child: DropdownButton<Season>(
         value: seasons.isNotEmpty ? seasons.first : null,
-        onChanged: (Season? newValue) {
+        onChanged: (final newValue) {
           if (newValue != null) {
             ref.read(selectedSeasonProvider.notifier).state = newValue;
           }
         },
-        items: seasons.map<DropdownMenuItem<Season>>((Season season) {
-          return DropdownMenuItem<Season>(
-            value: season,
-            child: Text(
-              season.name,
-              style: const TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 14,
-                color: Colors.white,
+        items: seasons
+            .map<DropdownMenuItem<Season>>(
+              (final season) => DropdownMenuItem<Season>(
+                value: season,
+                child: Text(
+                  season.name,
+                  style: const TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-            ),
-          );
-        }).toList(),
+            )
+            .toList(),
         underline: Container(),
         isExpanded: true,
         dropdownColor: AppColors.surface,
@@ -238,12 +247,11 @@ class ProfileScreen extends ConsumerWidget {
           color: AppColors.accent,
           size: 24,
         ),
-        hint: const Text(
+        hint: Text(
           'Select Season',
           style: TextStyle(
             fontFamily: 'Roboto',
-            color: Colors.white,
-            opacity: 0.6,
+            color: Colors.white.withOpacity(0.6),
           ),
         ),
       ),
@@ -260,11 +268,10 @@ class ProfileScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primary.withValues(alpha: 0.2),
-          width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: Colors.black.withOpacity(0.2),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -284,7 +291,11 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   /// Build main stat item
-  Widget _buildMainStat(IconData icon, String value, String label) {
+  Widget _buildMainStat(
+    final IconData icon,
+    final String value,
+    final String label,
+  ) {
     return Column(
       children: [
         Icon(
@@ -324,14 +335,15 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   /// Build start match button
-  Widget _buildStartMatchButton(BuildContext context) {
+  Widget _buildStartMatchButton(final BuildContext context, final WidgetRef ref) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ElevatedButton.icon(
         onPressed: () {
-          final hasMatchInProgress = ref.read(matchesProvider.notifier).hasMatchInProgress(profile.id);
+          final hasMatchInProgress = ref
+              .read(matchesProvider.notifier)
+              .hasMatchInProgress(profile.id);
           if (hasMatchInProgress) {
-            // Show error or navigate to existing match
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('A match is already in progress for this profile'),
@@ -343,7 +355,7 @@ class ProfileScreen extends ConsumerWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => MatchScreen(profile: profile),
+              builder: (final context) => MatchScreen(profile: profile),
             ),
           );
         },
@@ -386,7 +398,6 @@ class ProfileScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: AppColors.primary.withValues(alpha: 0.1),
-          width: 1,
         ),
       ),
       child: Row(
@@ -448,7 +459,7 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   /// Build mini stat for match history
-  Widget _buildMiniStat(String value, String label) {
+  Widget _buildMiniStat(final String value, final String label) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -456,7 +467,6 @@ class ProfileScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(6),
         border: Border.all(
           color: AppColors.primary.withValues(alpha: 0.3),
-          width: 1,
         ),
       ),
       child: Column(
@@ -481,5 +491,11 @@ class ProfileScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<ChildProfile>('profile', profile));
   }
 }

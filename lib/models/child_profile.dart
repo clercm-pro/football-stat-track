@@ -1,5 +1,4 @@
 import 'package:isar/isar.dart';
-import 'package:uuid/uuid.dart';
 
 part 'child_profile.g.dart';
 
@@ -7,10 +6,49 @@ part 'child_profile.g.dart';
 /// 
 /// Isar collection for local storage
 /// Fields match the specification in DATA-MODEL.md
-@collection
+@Collection()
 class ChildProfile {
-  @Id()
-  final String id;
+
+  ChildProfile({
+    this.id = Isar.autoIncrement,
+    required this.nickname,
+    this.firstName,
+    this.lastName,
+    this.birthYear,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  /// Create a new profile with auto-increment ID
+  factory ChildProfile.newProfile({
+    required final String nickname,
+    final String? firstName,
+    final String? lastName,
+    final int? birthYear,
+  }) {
+    return ChildProfile(
+      nickname: nickname,
+      firstName: firstName,
+      lastName: lastName,
+      birthYear: birthYear,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+
+  /// Create from JSON
+  factory ChildProfile.fromJson(final Map<String, dynamic> json) {
+    return ChildProfile(
+      id: json['id'] as int? ?? Isar.autoIncrement,
+      nickname: json['nickname'] as String,
+      firstName: json['firstName'] as String?,
+      lastName: json['lastName'] as String?,
+      birthYear: json['birthYear'] as int?,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+    );
+  }
+  Id id = Isar.autoIncrement;
   
   final String nickname;
   
@@ -24,37 +62,9 @@ class ChildProfile {
   
   final DateTime updatedAt;
 
-  ChildProfile({
-    required this.id,
-    required this.nickname,
-    this.firstName,
-    this.lastName,
-    this.birthYear,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  /// Create a new profile with generated ID
-  factory ChildProfile.newProfile({
-    required String nickname,
-    String? firstName,
-    String? lastName,
-    int? birthYear,
-  }) {
-    return ChildProfile(
-      id: const Uuid().v4(),
-      nickname: nickname,
-      firstName: firstName,
-      lastName: lastName,
-      birthYear: birthYear,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
-  }
-
   /// Copy with updated values
   ChildProfile copyWith({
-    String? id,
+    Id? id,
     String? nickname,
     String? firstName,
     String? lastName,
@@ -114,19 +124,6 @@ class ChildProfile {
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
-  }
-
-  /// Create from JSON
-  factory ChildProfile.fromJson(Map<String, dynamic> json) {
-    return ChildProfile(
-      id: json['id'] as String,
-      nickname: json['nickname'] as String,
-      firstName: json['firstName'] as String?,
-      lastName: json['lastName'] as String?,
-      birthYear: json['birthYear'] as int?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-    );
   }
 
   @override

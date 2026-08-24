@@ -1,10 +1,12 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../config/colors.dart';
-import '../models/child_profile.dart';
-import '../models/season.dart';
-import '../providers/match_provider.dart';
-import '../providers/season_provider.dart';
+import 'package:isar/isar.dart';
+import 'package:football_stat_track/config/colors.dart';
+import 'package:football_stat_track/models/child_profile.dart';
+import 'package:football_stat_track/models/match.dart';
+import 'package:football_stat_track/providers/match_provider.dart';
+import 'package:football_stat_track/providers/season_provider.dart';
 
 /// Match Screen - Live match tracking with goal/assist counters
 /// 
@@ -15,27 +17,31 @@ import '../providers/season_provider.dart';
 /// - Haptic feedback on press
 /// - Stop/end match button
 class MatchScreen extends ConsumerStatefulWidget {
-  final ChildProfile profile;
   
-  const MatchScreen({super.key, required this.profile});
+  const MatchScreen({required this.profile, super.key});
+  final ChildProfile profile;
 
   @override
   ConsumerState<MatchScreen> createState() => _MatchScreenState();
+
+  @override
+  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<ChildProfile>('profile', profile));
+  }
 }
 
-class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderStateMixin {
+class _MatchScreenState extends ConsumerState<MatchScreen>
+    with TickerProviderStateMixin {
   int _goals = 0;
   int _assists = 0;
   late AnimationController _timerController;
-  late Animation<int> _secondsAnimation;
-  late Animation<int> _minutesAnimation;
   int _totalSeconds = 0;
   bool _isRunning = true;
-  String? _matchId;
-  DateTime? _startTime;
+  Id? _matchId;
   
   // For haptic feedback simulation (would use vibration package in production)
-  bool _enableHaptics = true;
+  final bool _enableHaptics = true;
 
   @override
   void initState() {
@@ -54,16 +60,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
       }
     });
     
-    // Initialize match
-    _initMatch();
-    
     // Start the timer
     _timerController.repeat();
   }
   
   /// Initialize a new match
-  Future<void> _initMatch() async {
-    _startTime = DateTime.now();
+  Future<void> _initMatch(final WidgetRef ref) async {
     // Get current season
     final currentSeason = ref.read(currentSeasonProvider);
     if (currentSeason != null) {
@@ -74,8 +76,10 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
           seasonId: currentSeason.id,
         ),
       );
-      if (newMatch != null) {
-        _matchId = newMatch.id;
+      if (newMatch != null && mounted) {
+        setState(() {
+          _matchId = newMatch.id;
+        });
       }
     }
   }
@@ -90,7 +94,8 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
   String _formatTime() {
     final minutes = _totalSeconds ~/ 60;
     final seconds = _totalSeconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    return '${minutes.toString().padLeft(2, '0')}:'
+        '${seconds.toString().padLeft(2, '0')}';
   }
 
   /// Increment goals counter
@@ -99,11 +104,6 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
       _goals++;
     });
     _triggerHaptic();
-    
-    // Update in database if match exists
-    if (_matchId != null) {
-      await ref.read(matchesProvider.notifier).updateGoals(_matchId!, true);
-    }
   }
 
   /// Decrement goals counter (long press)
@@ -113,11 +113,6 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
         _goals--;
       });
       _triggerHaptic();
-      
-      // Update in database if match exists
-      if (_matchId != null) {
-        await ref.read(matchesProvider.notifier).updateGoals(_matchId!, false);
-      }
     }
   }
 
@@ -127,11 +122,6 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
       _assists++;
     });
     _triggerHaptic();
-    
-    // Update in database if match exists
-    if (_matchId != null) {
-      await ref.read(matchesProvider.notifier).updateAssists(_matchId!, true);
-    }
   }
 
   /// Decrement assists counter (long press)
@@ -144,7 +134,10 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
       
       // Update in database if match exists
       if (_matchId != null) {
-        await ref.read(matchesProvider.notifier).updateAssists(_matchId!, false);
+        await ref.read(matchesProvider.notifier).updateAssists(
+          _matchId!,
+          increment: false,
+        );
       }
     }
   }
@@ -157,14 +150,15 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
   }
 
   /// Stop the match and show end dialog
-  Future<void> _stopMatch() async {
+  Future<void> _stopMatch(final WidgetRef ref) async {
     _isRunning = false;
     _timerController.stop();
     
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
+    if (mounted) {
+      await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (final context) => AlertDialog(
         backgroundColor: AppColors.surface,
         title: const Text(
           'Match Completed',
@@ -216,7 +210,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
               if (_matchId != null) {
                 await ref.read(matchesProvider.notifier).endMatch(_matchId!);
               }
-              Navigator.popUntil(context, (route) => route.isFirst);
+              Navigator.popUntil(context, (final route) => route.isFirst);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
@@ -232,9 +226,14 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
       ),
     );
   }
+}
 
   /// Build stat for dialog
-  Widget _buildDialogStat(String label, int value, Color color) {
+  Widget _buildDialogStat(
+    final String label,
+    final int value,
+    final Color color,
+  ) {
     return Column(
       children: [
         Text(
@@ -251,7 +250,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 12,
-            color: Colors.white.withValues(alpha: 0.6),
+            color: Colors.white.withOpacity(0.6),
           ),
         ),
       ],
@@ -259,7 +258,14 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
+    // Initialize match on first build
+    if (_matchId == null) {
+      WidgetsBinding.instance.addPostFrameCallback((final _) {
+        _initMatch(ref);
+      });
+    }
+    
     return Scaffold(
       backgroundColor: AppColors.surface,
       appBar: AppBar(
@@ -285,11 +291,11 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
           // Stop button
           IconButton(
             icon: const Icon(Icons.stop, size: 28),
-            onPressed: _stopMatch,
+            onPressed: () => _stopMatch(ref),
             color: Colors.white,
             tooltip: 'End Match',
             style: IconButton.styleFrom(
-              backgroundColor: Colors.red.withValues(alpha: 0.3),
+              backgroundColor: Colors.red.withOpacity(0.3),
             ),
           ),
         ],
@@ -312,8 +318,28 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
                         icon: Icons.sports_soccer,
                         label: 'GOAL',
                         value: _goals,
-                        onTap: _incrementGoals,
-                        onLongPress: _decrementGoals,
+                        onTap: () async {
+                          await _incrementGoals();
+                          if (_matchId != null) {
+                            await ref
+                                .read(matchesProvider.notifier)
+                                .updateGoals(
+                                  _matchId!,
+                                  increment: true,
+                                );
+                          }
+                        },
+                        onLongPress: () async {
+                          await _decrementGoals();
+                          if (_matchId != null) {
+                            await ref
+                                .read(matchesProvider.notifier)
+                                .updateGoals(
+                                  _matchId!,
+                                  increment: false,
+                                );
+                          }
+                        },
                         borderColor: AppColors.accent,
                       ),
                     ),
@@ -324,8 +350,28 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
                         icon: Icons.assistant,
                         label: 'ASSIST',
                         value: _assists,
-                        onTap: _incrementAssists,
-                        onLongPress: _decrementAssists,
+                        onTap: () async {
+                          await _incrementAssists();
+                          if (_matchId != null) {
+                            await ref
+                                .read(matchesProvider.notifier)
+                                .updateAssists(
+                                  _matchId!,
+                                  increment: true,
+                                );
+                          }
+                        },
+                        onLongPress: () async {
+                          await _decrementAssists();
+                          if (_matchId != null) {
+                            await ref
+                                .read(matchesProvider.notifier)
+                                .updateAssists(
+                                  _matchId!,
+                                  increment: false,
+                                );
+                          }
+                        },
                         borderColor: AppColors.secondary,
                       ),
                     ),
@@ -348,12 +394,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
       child: Center(
         child: Text(
           _formatTime(),
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'Roboto',
             fontSize: 64,
             fontWeight: FontWeight.bold,
             color: AppColors.accent,
-            fontFeatures: const [FontFeature.tabularFigures()],
+            fontFeatures: [FontFeature.tabularFigures()],
           ),
         ),
       ),
@@ -362,12 +408,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
 
   /// Build counter button with tap and long press
   Widget _buildCounterButton({
-    required IconData icon,
-    required String label,
-    required int value,
-    required VoidCallback onTap,
-    required VoidCallback onLongPress,
-    required Color borderColor,
+    required final IconData icon,
+    required final String label,
+    required final int value,
+    required final VoidCallback onTap,
+    required final VoidCallback onLongPress,
+    required final Color borderColor,
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -377,12 +423,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
           color: AppColors.surfaceLight,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: borderColor.withValues(alpha: 0.5),
+            color: borderColor.withOpacity(0.5),
             width: 2,
           ),
           boxShadow: [
             BoxShadow(
-              color: borderColor.withValues(alpha: 0.2),
+              color: borderColor.withOpacity(0.2),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -433,8 +479,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
       decoration: BoxDecoration(
         color: AppColors.surfaceDark,
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.2),
-          width: 1,
+          color: AppColors.primary.withOpacity(0.2),
         ),
       ),
       child: Row(
@@ -461,7 +506,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
             ),
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              side: const BorderSide(color: AppColors.error, width: 1),
+              side: const BorderSide(color: AppColors.error),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -473,12 +518,12 @@ class _MatchScreenState extends ConsumerState<MatchScreen> with TickerProviderSt
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 12,
-              color: Colors.white.withValues(alpha: 0.6),
+              color: Colors.white.withOpacity(0.6),
             ),
           ),
           // End match button
           ElevatedButton.icon(
-            onPressed: () => _stopMatch(),
+            onPressed: () => _stopMatch(ref),
             icon: const Icon(Icons.check, size: 20),
             label: const Text(
               'END MATCH',

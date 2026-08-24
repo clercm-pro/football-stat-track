@@ -10,15 +10,10 @@ part 'match.g.dart';
 class Match {
 
   Match({
-    this.id = Isar.autoIncrement,
-    required this.childId,
-    required this.seasonId,
-    required this.startTime,
+    required this.childId, required this.seasonId, required this.startTime, required this.createdAt, required this.updatedAt, this.id = Isar.autoIncrement,
     this.endTime,
     this.goals = 0,
     this.assists = 0,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   /// Create a new match with auto-increment ID

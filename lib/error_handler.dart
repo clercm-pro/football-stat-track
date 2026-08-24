@@ -11,12 +11,16 @@ import 'package:flutter/material.dart';
 /// Call this method at the beginning of main, before calling runApp.
 void setupErrorHandling() {
   // 1. Flutter framework errors (e.g., widget build errors)
-  FlutterError.onError = (final details) {
+  FlutterError.onError = (details) {
     // Log to console in debug mode
     if (kDebugMode) {
-      debugPrint('═══════════════════════════════════════════════════════════');
+      debugPrint(
+        '═══════════════════════════════════════════════════════════',
+      );
       debugPrint('❌ FLUTTER ERROR');
-      debugPrint('═══════════════════════════════════════════════════════════');
+      debugPrint(
+        '═══════════════════════════════════════════════════════════',
+      );
       debugPrint('Exception: ${details.exception}');
       debugPrint('Library: ${details.library}');
       debugPrint('Context: ${details.context}');
@@ -28,28 +32,34 @@ void setupErrorHandling() {
   };
 
   // 2. Platform errors
-  PlatformDispatcher.instance.onError = (final error, final stack) {
+  PlatformDispatcher.instance.onError = (error, stack) {
     if (kDebugMode) {
-      debugPrint('═══════════════════════════════════════════════════════════');
+      debugPrint(
+        '═══════════════════════════════════════════════════════════',
+      );
       debugPrint('❌ PLATFORM ERROR');
-      debugPrint('═══════════════════════════════════════════════════════════');
+      debugPrint(
+        '═══════════════════════════════════════════════════════════',
+      );
       debugPrint('Error: $error');
       debugPrintStack(stackTrace: stack);
       debugPrint('═══════════════════════════════════════════════════════════\n');
     }
 
-    _logErrorToCustomService(FlutterErrorDetails(
-      exception: error,
-      stack: stack,
-      library: 'Platform',
-      context: null,
-    ));
+    _logErrorToCustomService(
+      FlutterErrorDetails(
+        exception: error,
+        stack: stack,
+        library: 'Platform',
+        context: null,
+      ),
+    );
 
     return true;
   };
 
   // 3. Custom error widget
-  ErrorWidget.builder = (final details) {
+  ErrorWidget.builder = (details) {
     if (kDebugMode) {
       return ErrorWidget(details);
     }
@@ -58,14 +68,14 @@ void setupErrorHandling() {
 }
 
 /// Log error to custom service.
-void _logErrorToCustomService(final FlutterErrorDetails details) {
+void _logErrorToCustomService(FlutterErrorDetails details) {
   if (!kDebugMode) {
-    // Implement production error logging here
+    // Implement production error logging here.
   }
 }
 
 /// Build a user-friendly error widget for production.
-Widget _buildProductionErrorWidget(final FlutterErrorDetails details) {
+Widget _buildProductionErrorWidget(FlutterErrorDetails details) {
   return Center(
     child: Material(
       color: Colors.transparent,
@@ -82,7 +92,7 @@ Widget _buildProductionErrorWidget(final FlutterErrorDetails details) {
             const SizedBox(height: 16),
             const Text(
               'Une erreur est survenue',
-                          style: const TextStyle(
+              style: TextStyle(
                 color: Color(0xFFB00020),
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -91,10 +101,10 @@ Widget _buildProductionErrorWidget(final FlutterErrorDetails details) {
             const SizedBox(height: 8),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
-                          child: const Text(
+              child: Text(
                 'Désolé. Veuillez redémarrer l\'application.',
                 textAlign: TextAlign.center,
-                            style: const TextStyle(
+                style: TextStyle(
                   color: Color(0xFF666666),
                   fontSize: 14,
                 ),
@@ -103,7 +113,7 @@ Widget _buildProductionErrorWidget(final FlutterErrorDetails details) {
             const SizedBox(height: 24),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFB00020),
+                backgroundColor: const Color(0xFFB00020),
                 foregroundColor: Colors.white,
               ),
               onPressed: () {},
@@ -130,26 +140,26 @@ class AppException implements Exception {
 
 /// Result wrapper for operations that can fail.
 abstract class Result<T> {
-  const factory Result.success(T value) = _ResultSuccess<T>;
-  const factory Result.error(Object error) = _ResultError<T>;
+  const factory Result.success(final T value) = _ResultSuccess<T>;
+  const factory Result.error(final Object error) = _ResultError<T>;
 
   bool get isSuccess;
   bool get isError;
   T get value;
   Object? get error;
 
-  T orElse(T Function(final Object error) orElse);
+  T orElse(final T Function(Object error) orElse);
 
   R when<R>({
-    required R Function(final T value) onSuccess,
-    required R Function(final Object error) onError,
+    required final R Function(T value) onSuccess,
+    required final R Function(Object error) onError,
   });
 }
 
 class _ResultSuccess<T> implements Result<T> {
-  final T _value;
-
   const _ResultSuccess(this._value);
+
+  final T _value;
 
   @override
   bool get isSuccess => true;
@@ -164,12 +174,12 @@ class _ResultSuccess<T> implements Result<T> {
   Object? get error => null;
 
   @override
-  T orElse(T Function(final Object error) orElse) => _value;
+  T orElse(final T Function(Object error) orElse) => _value;
 
   @override
   R when<R>({
-    required R Function(final T value) onSuccess,
-    required R Function(final Object error) onError,
+    required final R Function(T value) onSuccess,
+    required final R Function(Object error) onError,
   }) => onSuccess(_value);
 
   @override
@@ -177,9 +187,9 @@ class _ResultSuccess<T> implements Result<T> {
 }
 
 class _ResultError<T> implements Result<T> {
-  final Object _error;
-
   const _ResultError(this._error);
+
+  final Object _error;
 
   @override
   bool get isSuccess => false;
@@ -194,12 +204,12 @@ class _ResultError<T> implements Result<T> {
   Object? get error => _error;
 
   @override
-  T orElse(T Function(final Object error) orElse) => orElse(_error);
+  T orElse(final T Function(Object error) orElse) => orElse(_error);
 
   @override
   R when<R>({
-    required R Function(final T value) onSuccess,
-    required R Function(final Object error) onError,
+    required final R Function(T value) onSuccess,
+    required final R Function(Object error) onError,
   }) => onError(_error);
 
   @override

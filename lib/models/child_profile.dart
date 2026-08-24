@@ -10,13 +10,10 @@ part 'child_profile.g.dart';
 class ChildProfile {
 
   ChildProfile({
-    this.id = Isar.autoIncrement,
-    required this.nickname,
+    required this.nickname, required this.createdAt, required this.updatedAt, this.id = Isar.autoIncrement,
     this.firstName,
     this.lastName,
     this.birthYear,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   /// Create a new profile with auto-increment ID
@@ -64,13 +61,13 @@ class ChildProfile {
 
   /// Copy with updated values
   ChildProfile copyWith({
-    Id? id,
-    String? nickname,
-    String? firstName,
-    String? lastName,
-    int? birthYear,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    final Id? id,
+    final String? nickname,
+    final String? firstName,
+    final String? lastName,
+    final int? birthYear,
+    final DateTime? createdAt,
+    final DateTime? updatedAt,
   }) {
     return ChildProfile(
       id: id ?? this.id,
@@ -132,7 +129,7 @@ class ChildProfile {
   }
 
   @override
-  bool operator ==(Object other) {
+  bool operator ==(final Object other) {
     if (identical(this, other)) return true;
     return other is ChildProfile && other.id == id;
   }

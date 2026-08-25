@@ -11,7 +11,7 @@ void main() {
 
   group('ChildProfile model', () {
     test('can create profile with required fields', () {
-      const profile = ChildProfile(
+      final profile = ChildProfile(
         nickname: 'Test',
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
@@ -20,7 +20,7 @@ void main() {
     });
 
     test('can create profile with all fields', () {
-      const profile = ChildProfile(
+      final profile = ChildProfile(
         id: 1,
         nickname: 'Test',
         firstName: 'First',

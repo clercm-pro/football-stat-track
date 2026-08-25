@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:football_stat_track/app.dart';
 import 'package:football_stat_track/error_handler.dart';
 import 'package:football_stat_track/models/child_profile.dart';
@@ -17,13 +18,28 @@ void main() async {
   setupErrorHandling();
 
   // Initialize Isar for local storage
-  final dir = await getApplicationDocumentsDirectory();
-  final isar = await Isar.open(
-    [ChildProfileSchema, SeasonSchema, MatchSchema],
-    directory: dir.path,
-    name: 'statrack',
-    inspector: false,
-  );
+  final Isar isar;
+  if (kIsWeb) {
+    // On web Isar uses IndexedDB and doesn't require a directory
+    isar = await Isar.open(
+      [
+        ChildProfileSchema,
+        SeasonSchema,
+        MatchSchema,
+      ],
+      directory: '',
+      name: 'statrack',
+      inspector: false,
+    );
+  } else {
+    final dir = await getApplicationDocumentsDirectory();
+    isar = await Isar.open(
+      [ChildProfileSchema, SeasonSchema, MatchSchema],
+      directory: dir.path,
+      name: 'statrack',
+      inspector: false,
+    );
+  }
 
   // Run the application
   runApp(

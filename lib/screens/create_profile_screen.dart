@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:football_stat_track/config/colors.dart';
+import 'package:football_stat_track/l10n/app_localizations.dart';
 import 'package:football_stat_track/models/child_profile.dart';
 import 'package:football_stat_track/providers/child_profile_provider.dart';
 
@@ -82,6 +83,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
         birthYear: _birthYearController.text.trim().isEmpty 
             ? null 
             : int.parse(_birthYearController.text.trim()),
+        avatarColor: _avatarColor.toARGB32(),
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
@@ -122,9 +124,9 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
           onPressed: () => Navigator.pop(context),
           color: Colors.white,
         ),
-        title: const Text(
-          'Create Profile',
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context).createProfileTitle,
+          style: const TextStyle(
             fontFamily: 'Roboto',
             fontWeight: FontWeight.bold,
           ),
@@ -142,25 +144,25 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Avatar preview
-                _buildAvatarPreview(),
+                _buildAvatarPreview(context),
                 const SizedBox(height: 24),
                 
                 // Avatar color selector
-                _buildColorSelector(),
+                _buildColorSelector(context),
                 const SizedBox(height: 24),
                 
                 // Nickname field (required)
                 _buildTextField(
                   controller: _nicknameController,
-                  label: 'Nickname *',
-                  hint: 'Leo, Max, Emma...',
+                  label: AppLocalizations.of(context).nicknameLabel,
+                  hint: AppLocalizations.of(context).nicknameHint,
                   icon: Icons.person,
                   validator: (final value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Nickname is required';
+                      return AppLocalizations.of(context).nicknameRequired;
                     }
                     if (value.trim().length > 20) {
-                      return 'Max 20 characters';
+                      return AppLocalizations.of(context).nicknameMaxLength;
                     }
                     return null;
                   },
@@ -170,8 +172,8 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                 // First name field (optional)
                 _buildTextField(
                   controller: _firstNameController,
-                  label: 'First Name',
-                  hint: 'Optional',
+                  label: AppLocalizations.of(context).firstNameLabel,
+                  hint: AppLocalizations.of(context).firstNameHint,
                   icon: Icons.person_outline,
                 ),
                 const SizedBox(height: 16),
@@ -179,8 +181,8 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                 // Last name field (optional)
                 _buildTextField(
                   controller: _lastNameController,
-                  label: 'Last Name',
-                  hint: 'Optional',
+                  label: AppLocalizations.of(context).lastNameLabel,
+                  hint: AppLocalizations.of(context).lastNameHint,
                   icon: Icons.person_outline,
                 ),
                 const SizedBox(height: 16),
@@ -188,8 +190,8 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                 // Birth year field (optional)
                 _buildTextField(
                   controller: _birthYearController,
-                  label: 'Birth Year',
-                  hint: 'YYYY',
+                  label: AppLocalizations.of(context).birthYearLabel,
+                  hint: AppLocalizations.of(context).birthYearHint,
                   icon: Icons.calendar_today,
                   keyboardType: TextInputType.number,
                   suffix: _calculateAgeDisplay() != null 
@@ -209,10 +211,10 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                     if (value != null && value.isNotEmpty) {
                       final year = int.tryParse(value);
                       if (year == null) {
-                        return 'Enter a valid year';
+                        return AppLocalizations.of(context).birthYearInvalid;
                       }
                       if (year < 1900 || year > DateTime.now().year) {
-                        return 'Invalid year';
+                        return AppLocalizations.of(context).birthYearRange;
                       }
                     }
                     return null;
@@ -221,7 +223,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                 const SizedBox(height: 24),
                 
                 // Profile limit warning
-                _buildProfileLimitWarning(),
+                _buildProfileLimitWarning(context),
                 const SizedBox(height: 24),
                 
                 // Action buttons
@@ -240,9 +242,9 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        child: const Text(
-                          'CANCEL',
-                          style: TextStyle(
+                        child: Text(
+                          AppLocalizations.of(context).cancelButton,
+                          style: const TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -266,9 +268,9 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
                           ),
                           elevation: 4,
                         ),
-                        child: const Text(
-                          'SAVE PROFILE',
-                          style: TextStyle(
+                        child: Text(
+                          AppLocalizations.of(context).saveProfileButton,
+                          style: const TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -288,7 +290,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
   }
 
   /// Build avatar preview
-  Widget _buildAvatarPreview() {
+  Widget _buildAvatarPreview(final BuildContext context) {
     return Column(
       children: [
         Container(
@@ -323,7 +325,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
         ),
         const SizedBox(height: 8),
         Text(
-          'Profile Avatar',
+          AppLocalizations.of(context).profileAvatar,
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 14,
@@ -335,7 +337,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
   }
 
   /// Build color selector for avatar
-  Widget _buildColorSelector() {
+  Widget _buildColorSelector(final BuildContext context) {
     final colors = [
       AppColors.primary,
       AppColors.secondary,
@@ -349,7 +351,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'Avatar Color',
+          AppLocalizations.of(context).avatarColor,
           style: TextStyle(
             fontFamily: 'Roboto',
             fontSize: 14,
@@ -485,7 +487,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
   }
 
   /// Build profile limit warning
-  Widget _buildProfileLimitWarning() {
+  Widget _buildProfileLimitWarning(final BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -495,18 +497,18 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
           color: AppColors.primary.withValues(alpha: 0.3),
         ),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.info_outline,
             size: 20,
             color: AppColors.primary,
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'You can create up to 4 profiles per device',
-              style: TextStyle(
+              AppLocalizations.of(context).profileLimitWarning,
+              style: const TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 13,
                 color: AppColors.primary,

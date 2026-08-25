@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:football_stat_track/config/colors.dart';
+import 'package:football_stat_track/l10n/app_localizations.dart';
 import 'package:football_stat_track/models/child_profile.dart';
 import 'package:football_stat_track/models/season.dart';
 import 'package:football_stat_track/providers/season_provider.dart';
@@ -53,7 +54,7 @@ class ProfileScreen extends ConsumerWidget {
               (final route) => route.isFirst,
             ),
             color: Colors.white,
-            tooltip: 'Home',
+            tooltip: AppLocalizations.of(context).home,
           ),
         ],
       ),
@@ -66,23 +67,26 @@ class ProfileScreen extends ConsumerWidget {
             ),
             // Season selector
             SliverToBoxAdapter(
-              child: _buildSeasonSelector(seasons, ref),
+              child: _buildSeasonSelector(context, seasons, ref),
             ),
             // Stats display
             SliverToBoxAdapter(
-              child: _buildStatsDisplay(),
+              child: _buildStatsDisplay(context),
             ),
             // Start match button
             SliverToBoxAdapter(
               child: _buildStartMatchButton(context, ref),
             ),
             // Match history header
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Text(
-                  'Recent Matches',
-                  style: TextStyle(
+                  AppLocalizations.of(context).recentMatches,
+                  style: const TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -200,6 +204,7 @@ class ProfileScreen extends ConsumerWidget {
 
   /// Build season selector
   Widget _buildSeasonSelector(
+    final BuildContext context,
     final List<Season> seasons,
     final WidgetRef ref,
   ) {
@@ -248,7 +253,7 @@ class ProfileScreen extends ConsumerWidget {
           size: 24,
         ),
         hint: Text(
-          'Select Season',
+          AppLocalizations.of(context).selectSeason,
           style: TextStyle(
             fontFamily: 'Roboto',
             color: Colors.white.withValues(alpha: 0.6),
@@ -259,7 +264,7 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   /// Build stats display
-  Widget _buildStatsDisplay() {
+  Widget _buildStatsDisplay(final BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(20),
@@ -280,11 +285,23 @@ class ProfileScreen extends ConsumerWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildMainStat(Icons.emoji_events, '12', 'Matches'),
+          _buildMainStat(
+            Icons.emoji_events,
+            '12',
+            AppLocalizations.of(context).matchesLabel,
+          ),
           _buildStatDivider(),
-          _buildMainStat(Icons.sports_soccer, '24', 'Goals'),
+          _buildMainStat(
+            Icons.sports_soccer,
+            '24',
+            AppLocalizations.of(context).goalsLabel,
+          ),
           _buildStatDivider(),
-          _buildMainStat(Icons.assistant, '10', 'Assists'),
+          _buildMainStat(
+            Icons.assistant,
+            '10',
+            AppLocalizations.of(context).assistsLabel,
+          ),
         ],
       ),
     );
@@ -348,9 +365,9 @@ class ProfileScreen extends ConsumerWidget {
               .hasMatchInProgress(profile.id);
           if (hasMatchInProgress) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
+              SnackBar(
                 content: Text(
-                  'A match is already in progress for this profile',
+                  AppLocalizations.of(context).matchInProgressError,
                 ),
                 backgroundColor: AppColors.error,
               ),
@@ -369,9 +386,9 @@ class ProfileScreen extends ConsumerWidget {
           size: 24,
           color: Colors.white,
         ),
-        label: const Text(
-          'START A MATCH',
-          style: TextStyle(
+        label: Text(
+          AppLocalizations.of(context).startMatchButton,
+          style: const TextStyle(
             fontFamily: 'Roboto',
             fontSize: 16,
             fontWeight: FontWeight.bold,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:football_stat_track/config/colors.dart';
+import 'package:football_stat_track/l10n/app_localizations.dart';
 import 'package:football_stat_track/screens/home_screen.dart';
 
 /// StatTrackApp - Main application widget
 /// 
-/// Configures the theme and home screen
+/// Configures the theme and home screen with localization support
 class StatTrackApp extends StatelessWidget {
   const StatTrackApp({super.key});
 
@@ -17,6 +19,15 @@ class StatTrackApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
+      // Localization configuration
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: supportedLocales,
+      locale: const Locale('fr', 'FR'), // Default to French
     );
   }
 }

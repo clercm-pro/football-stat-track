@@ -6,6 +6,12 @@ library error_handler;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:football_stat_track/l10n/app_localizations.dart';
+
+/// Extension to access localizations from BuildContext
+extension LocalizationsContext on BuildContext {
+  AppLocalizations get l10n => AppLocalizations.of(this);
+}
 
 /// Setup global error handling for the application.
 /// Call this method at the beginning of main, before calling runApp.

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:football_stat_track/config/colors.dart';
+import 'package:football_stat_track/l10n/app_localizations.dart';
 import 'package:football_stat_track/models/child_profile.dart';
 import 'package:football_stat_track/models/match.dart';
 import 'package:football_stat_track/providers/match_provider.dart';
@@ -104,6 +105,13 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
       _goals++;
     });
     _triggerHaptic();
+    // Update in database if match exists
+    if (_matchId != null) {
+      await ref.read(matchesProvider.notifier).updateGoals(
+        _matchId!,
+        increment: true,
+      );
+    }
   }
 
   /// Decrement goals counter (long press)
@@ -113,6 +121,13 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
         _goals--;
       });
       _triggerHaptic();
+      // Update in database if match exists
+      if (_matchId != null) {
+        await ref.read(matchesProvider.notifier).updateGoals(
+          _matchId!,
+          increment: false,
+        );
+      }
     }
   }
 
@@ -122,6 +137,13 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
       _assists++;
     });
     _triggerHaptic();
+    // Update in database if match exists
+    if (_matchId != null) {
+      await ref.read(matchesProvider.notifier).updateAssists(
+        _matchId!,
+        increment: true,
+      );
+    }
   }
 
   /// Decrement assists counter (long press)
@@ -206,11 +228,15 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
           ),
           ElevatedButton(
             onPressed: () async {
-              // Save match and return
+              // Save match with final stats and return
               if (_matchId != null) {
                 await ref
                     .read(matchesProvider.notifier)
-                    .endMatch(_matchId!);
+                    .endMatchWithStats(
+                      _matchId!,
+                      _goals,
+                      _assists,
+                    );
               }
               if (!context.mounted) {
                 return;
@@ -264,6 +290,34 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
 
   @override
   Widget build(final BuildContext context) {
+    // Check if there's a current season
+    final currentSeason = ref.watch(currentSeasonProvider);
+    
+    // If no season selected, show error
+    if (currentSeason == null && _matchId == null) {
+      WidgetsBinding.instance.addPostFrameCallback((final _) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context).selectSeasonFirst,
+              style: const TextStyle(color: Colors.white),
+            ),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        // Go back after showing error
+        WidgetsBinding.instance.addPostFrameCallback((final _) {
+          if (mounted) {
+            Navigator.pop(context);
+          }
+        });
+      });
+      return const Scaffold(
+        backgroundColor: Color(0xFF1A1A1A),
+      );
+    }
+    
     // Initialize match on first build
     if (_matchId == null) {
       WidgetsBinding.instance.addPostFrameCallback((final _) {

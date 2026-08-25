@@ -16,7 +16,8 @@ dependencies:
   vibration: ^3.0.0
   url_launcher: ^6.1.11
   path_provider: ^2.1.2
-
+  flutter_localizations:
+    sdk: flutter
 dev_dependencies:
   flutter_lints: ^3.0.0
   flutter_test:

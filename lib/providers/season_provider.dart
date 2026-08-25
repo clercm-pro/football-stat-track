@@ -13,7 +13,8 @@ import 'package:football_stat_track/providers/database_provider.dart';
 /// - Getting current season
 class SeasonNotifier extends StateNotifier<List<Season>> {
   
-  SeasonNotifier(this._collection) : super([]);
+  SeasonNotifier(this._isar, this._collection) : super([]);
+  final Isar _isar;
   final IsarCollection<Season> _collection;
 
   /// Load seasons from database
@@ -38,8 +39,10 @@ class SeasonNotifier extends StateNotifier<List<Season>> {
       return season;
     }
     
-    // Save to database
-    await _collection.put(season);
+    // Save to database (must be in transaction)
+    await _isar.writeTxn(() async {
+      await _collection.put(season);
+    });
     
     // Reload state
     await loadSeasons();
@@ -59,8 +62,10 @@ class SeasonNotifier extends StateNotifier<List<Season>> {
       return false;
     }
     
-    // Save to database
-    await _collection.put(updatedSeason);
+    // Save to database (must be in transaction)
+    await _isar.writeTxn(() async {
+      await _collection.put(updatedSeason);
+    });
     
     // Reload state
     await loadSeasons();
@@ -69,8 +74,10 @@ class SeasonNotifier extends StateNotifier<List<Season>> {
 
   /// Delete a season by ID
   Future<bool> deleteSeason(final Id seasonId) async {
-    // Delete from database
-    final success = await _collection.delete(seasonId);
+    // Delete from database (must be in transaction)
+    final success = await _isar.writeTxn<bool>(() async {
+      return _collection.delete(seasonId);
+    });
     
     // Reload state
     await loadSeasons();
@@ -122,8 +129,9 @@ class SeasonNotifier extends StateNotifier<List<Season>> {
 
 /// Notifier factory to avoid duplicate initialization code
 SeasonNotifier _getSeasonsNotifier(final Ref ref) {
+  final isar = ref.watch(isarProvider);
   final collection = ref.watch(seasonCollectionProvider);
-  final notifier = SeasonNotifier(collection);
+  final notifier = SeasonNotifier(isar, collection);
   notifier.loadSeasons();
   return notifier;
 }

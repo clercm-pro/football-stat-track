@@ -21,7 +21,9 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   }
 
   @override
-  bool shouldReload(covariant final LocalizationsDelegate<AppLocalizations> old) => false;
+  bool shouldReload(
+    covariant final LocalizationsDelegate<AppLocalizations> old,
+  ) => false;
 }
 
 /// Main localization class
@@ -91,6 +93,11 @@ class AppLocalizations {
     'cancelButton': 'CANCEL',
     'saveProfileButton': 'SAVE PROFILE',
     'profileLimitWarning': 'You can create up to 4 profiles per device',
+    'addNewPlayer': 'Add a new player',
+    'addNewSeason': 'Add a new season',
+    'selectSeasonFirst': 'Please select a season first',
+    'profileLimitReachedMessage': 'Maximum profiles reached (4/4)',
+    'addProfileTooltip': 'Add a new profile',
     
     // Create Season Screen
     'createSeasonTitle': 'Create Season',
@@ -195,6 +202,11 @@ class AppLocalizations {
     'cancelButton': 'ANNULER',
     'saveProfileButton': 'ENREGISTRER LE PROFIL',
     'profileLimitWarning': 'Vous pouvez créer jusqu\'à 4 profils par appareil',
+    'addNewPlayer': 'Ajouter un nouveau joueur',
+    'addNewSeason': 'Ajouter une nouvelle saison',
+    'selectSeasonFirst': 'Veuillez sélectionner une saison d\'abord',
+    'profileLimitReachedMessage': 'Limite de profils atteinte (4/4)',
+    'addProfileTooltip': 'Ajouter un nouveau profil',
     
     // Create Season Screen
     'createSeasonTitle': 'Créer une Saison',
@@ -312,6 +324,12 @@ class AppLocalizations {
   String get cancelButton => translate('cancelButton');
   String get saveProfileButton => translate('saveProfileButton');
   String get profileLimitWarning => translate('profileLimitWarning');
+  String get addNewPlayer => translate('addNewPlayer');
+  String get addNewSeason => translate('addNewSeason');
+  String get selectSeasonFirst => translate('selectSeasonFirst');
+  String get profileLimitReachedMessage =>
+      translate('profileLimitReachedMessage');
+  String get addProfileTooltip => translate('addProfileTooltip');
 
   // Create Season Screen
   String get createSeasonTitle => translate('createSeasonTitle');
@@ -350,7 +368,8 @@ class AppLocalizations {
 
   // Dialog Messages
   String get deleteProfileTitle => translate('deleteProfileTitle');
-  String get deleteProfileConfirmation => translate('deleteProfileConfirmation');
+  String get deleteProfileConfirmation =>
+      translate('deleteProfileConfirmation');
   String get actionCannotBeUndone => translate('actionCannotBeUndone');
   String get delete => translate('delete');
 

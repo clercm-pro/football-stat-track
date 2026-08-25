@@ -3,34 +3,34 @@ import 'package:flutter/material.dart';
 /// AppColors - Color palette for StatTrack application
 /// 
 /// Based on the design specification:
-/// - Primary: #5B23FF (Electric purple)
-/// - Surface: #362F4F (Deep purple)
-/// - Accent: #E4FF30 (Lime green)
-/// - Secondary: #008BFF (Bright blue)
-/// - Error: #EA4335 (Red)
+/// - Primary: #29BF12 (Green)
+/// - Primary Light: #ABFF4F (Light Green)
+/// - Surface: #08BDBD (Teal)
+/// - Accent: #F21B3F (Pink)
+/// - Error: #FF9914 (Orange)
 /// - Text colors for dark theme
 class AppColors {
   // Primary colors
-  static const primary = Color(0xFF5B23FF);
-  static const primaryLight = Color(0xFF7C4DFF);
-  static const primaryDark = Color(0xFF4A1ECC);
+  static const primary = Color(0xFF29BF12);
+  static const primaryLight = Color(0xFFABFF4F);
+  static const primaryDark = Color(0xFF08BDBD);
   
   // Surface colors
-  static const surface = Color(0xFF362F4F);
-  static const surfaceLight = Color(0xFF4A4260);
-  static const surfaceDark = Color(0xFF2A253D);
+  static const surface = Color(0xFF1A1A1A);
+  static const surfaceLight = Color(0xFF2A2A2A);
+  static const surfaceDark = Color(0xFF0F0F0F);
   
   // Accent colors
-  static const accent = Color(0xFFE4FF30);
-  static const accentDim = Color(0xFFB3CC25);
+  static const accent = Color(0xFFF21B3F);
+  static const accentDim = Color(0xFFFF4C6B);
   
   // Secondary colors
-  static const secondary = Color(0xFF008BFF);
-  static const secondaryLight = Color(0xFF33A1FF);
+  static const secondary = Color(0xFF08BDBD);
+  static const secondaryLight = Color(0xFF33D4D4);
   
   // Error colors
-  static const error = Color(0xFFEA4335);
-  static const errorLight = Color(0xFFFF6B6B);
+  static const error = Color(0xFFFF9914);
+  static const errorLight = Color(0xFFFFB340);
   
   // Text colors
   static const textPrimary = Colors.white;
@@ -65,12 +65,13 @@ class AppColors {
       ),
     ),
     cardTheme: CardThemeData(
-      elevation: 4,
+      elevation: 8,
       margin: const EdgeInsets.all(8),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: primary.withValues(alpha: 0.5), width: 1.0),
       ),
-      color: surface,
+      color: surfaceLight,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

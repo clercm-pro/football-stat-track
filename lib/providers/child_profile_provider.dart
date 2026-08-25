@@ -13,7 +13,8 @@ import 'package:football_stat_track/providers/database_provider.dart';
 /// - Maximum of 4 profiles per device (R-01)
 class ChildProfileNotifier extends StateNotifier<List<ChildProfile>> {
   
-  ChildProfileNotifier(this._collection) : super([]);
+  ChildProfileNotifier(this._isar, this._collection) : super([]);
+  final Isar _isar;
   final IsarCollection<ChildProfile> _collection;
 
   /// Maximum number of profiles allowed per device
@@ -44,8 +45,10 @@ class ChildProfileNotifier extends StateNotifier<List<ChildProfile>> {
       return null;
     }
     
-    // Save to database
-    await _collection.put(profile);
+    // Save to database (must be in transaction)
+    await _isar.writeTxn(() async {
+      await _collection.put(profile);
+    });
     
     // Reload state
     await loadProfiles();
@@ -65,8 +68,10 @@ class ChildProfileNotifier extends StateNotifier<List<ChildProfile>> {
       return false;
     }
     
-    // Save to database
-    await _collection.put(updatedProfile);
+    // Save to database (must be in transaction)
+    await _isar.writeTxn(() async {
+      await _collection.put(updatedProfile);
+    });
     
     // Reload state
     await loadProfiles();
@@ -82,8 +87,10 @@ class ChildProfileNotifier extends StateNotifier<List<ChildProfile>> {
       return false; // Cannot delete the last profile
     }
     
-    // Delete from database
-    final success = await _collection.delete(profileId);
+    // Delete from database (must be in transaction)
+    final success = await _isar.writeTxn<bool>(() async {
+      return _collection.delete(profileId);
+    });
     
     // Reload state
     await loadProfiles();
@@ -111,8 +118,9 @@ class ChildProfileNotifier extends StateNotifier<List<ChildProfile>> {
 final childProfilesProvider =
     StateNotifierProvider<ChildProfileNotifier, List<ChildProfile>>(
   (final ref) {
+    final isar = ref.watch(isarProvider);
     final collection = ref.watch(childProfileCollectionProvider);
-    final notifier = ChildProfileNotifier(collection);
+    final notifier = ChildProfileNotifier(isar, collection);
     notifier.loadProfiles();
     return notifier;
   },

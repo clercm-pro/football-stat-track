@@ -17,6 +17,7 @@ class ChildProfile {
     this.firstName,
     this.lastName,
     this.birthYear,
+    this.avatarColor = 0xFF29BF12,
   });
 
   /// Create a new profile with auto-increment ID
@@ -25,12 +26,14 @@ class ChildProfile {
     final String? firstName,
     final String? lastName,
     final int? birthYear,
+    final int avatarColor = 0xFF29BF12,
   }) {
     return ChildProfile(
       nickname: nickname,
       firstName: firstName,
       lastName: lastName,
       birthYear: birthYear,
+      avatarColor: avatarColor,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
@@ -44,6 +47,7 @@ class ChildProfile {
       firstName: json['firstName'] as String?,
       lastName: json['lastName'] as String?,
       birthYear: json['birthYear'] as int?,
+      avatarColor: json['avatarColor'] as int? ?? 0xFF29BF12,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
@@ -58,6 +62,8 @@ class ChildProfile {
   
   final int? birthYear;
   
+  final int avatarColor;
+  
   final DateTime createdAt;
   
   final DateTime updatedAt;
@@ -69,6 +75,7 @@ class ChildProfile {
     final String? firstName,
     final String? lastName,
     final int? birthYear,
+    final int? avatarColor,
     final DateTime? createdAt,
     final DateTime? updatedAt,
   }) {
@@ -78,6 +85,7 @@ class ChildProfile {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       birthYear: birthYear ?? this.birthYear,
+      avatarColor: avatarColor ?? this.avatarColor,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
     );
@@ -123,6 +131,7 @@ class ChildProfile {
       'firstName': firstName,
       'lastName': lastName,
       'birthYear': birthYear,
+      'avatarColor': avatarColor,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };

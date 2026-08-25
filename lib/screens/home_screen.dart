@@ -2,9 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:football_stat_track/config/colors.dart';
+import 'package:football_stat_track/l10n/app_localizations.dart';
 import 'package:football_stat_track/models/child_profile.dart';
 import 'package:football_stat_track/providers/child_profile_provider.dart';
 import 'package:football_stat_track/screens/create_profile_screen.dart';
+import 'package:football_stat_track/screens/create_season_screen.dart';
 import 'package:football_stat_track/screens/profile_screen.dart';
 
 /// Home Screen - Displays the list of child profiles
@@ -24,9 +26,9 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.surface,
       appBar: AppBar(
-        title: const Text(
-          'STATTRACK',
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context).statTrackTitle,
+          style: const TextStyle(
             fontFamily: 'Roboto',
             fontWeight: FontWeight.bold,
             letterSpacing: 1.5,
@@ -40,7 +42,7 @@ class HomeScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.flash_on, size: 20),
             color: AppColors.accent,
-            tooltip: 'Created By Deerflow',
+            tooltip: AppLocalizations.of(context).createdByDeerflow,
             onPressed: () {
               // Open Deerflow link in browser
               // In production, use url_launcher package
@@ -53,20 +55,20 @@ class HomeScreen extends ConsumerWidget {
           children: [
             Expanded(
               child: profiles.isEmpty
-                  ? _buildEmptyState()
+                  ? _buildEmptyState(context)
                   : _buildProfileGrid(profiles, context, ref),
             ),
             // Footer with Deerflow mention
-            _buildFooter(),
+            _buildFooter(context),
           ],
         ),
       ),
-      floatingActionButton: _buildAddButton(context),
+      floatingActionButton: _buildAddButton(context, profiles),
     );
   }
 
   /// Build empty state when no profiles exist
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(final BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -86,7 +88,7 @@ class HomeScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            'No profiles yet',
+            AppLocalizations.of(context).noProfiles,
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 20,
@@ -96,7 +98,7 @@ class HomeScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Tap + to add your first player',
+            AppLocalizations.of(context).addFirstPlayer,
             style: TextStyle(
               fontFamily: 'Roboto',
               fontSize: 14,
@@ -153,21 +155,22 @@ class HomeScreen extends ConsumerWidget {
       context: context,
       builder: (final context) => AlertDialog(
         backgroundColor: AppColors.surface,
-        title: const Text(
-          'Delete Profile',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          AppLocalizations.of(context).deleteProfileTitle,
+          style: const TextStyle(color: Colors.white),
         ),
         content: Text(
-          'Are you sure you want to delete ${profile.nickname}? '
-          'This action cannot be undone.',
+          '${AppLocalizations.of(context).deleteProfileConfirmation} '
+          '${profile.nickname}? '
+          '${AppLocalizations.of(context).actionCannotBeUndone}',
           style: const TextStyle(color: Colors.white),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(color: AppColors.secondary),
+            child: Text(
+              AppLocalizations.of(context).cancel,
+              style: const TextStyle(color: AppColors.secondary),
             ),
           ),
           TextButton(
@@ -181,9 +184,9 @@ class HomeScreen extends ConsumerWidget {
               }
               Navigator.pop(dialogContext);
             },
-            child: const Text(
-              'Delete',
-              style: TextStyle(color: AppColors.error),
+            child: Text(
+              AppLocalizations.of(context).delete,
+              style: const TextStyle(color: AppColors.error),
             ),
           ),
         ],
@@ -191,64 +194,138 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  /// Build add profile floating action button
-  Widget _buildAddButton(final BuildContext context) {
+  /// Build add floating action button with menu
+  Widget _buildAddButton(
+    final BuildContext context,
+    final List<ChildProfile> profiles,
+  ) {
+    final isProfileLimitReached =
+        profiles.length >= ChildProfileNotifier.maxProfiles;
     return FloatingActionButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (final context) => const CreateProfileScreen(),
-          ),
-        );
-      },
+      onPressed: () => _showCreateMenu(context, isProfileLimitReached),
       backgroundColor: AppColors.primary,
       foregroundColor: Colors.white,
+      tooltip: AppLocalizations.of(context).addProfileTooltip,
       elevation: 6,
       shape: const CircleBorder(),
       child: const Icon(Icons.add, size: 30),
     );
   }
 
+  /// Show menu to create profile or season
+  void _showCreateMenu(
+    final BuildContext context,
+    final bool isProfileLimitReached,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.surface,
+      builder: (final context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Create Profile option
+              ListTile(
+                leading: const Icon(Icons.person_add, color: AppColors.accent),
+                title: Text(
+                  AppLocalizations.of(context).createProfileTitle,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  AppLocalizations.of(context).addNewPlayer,
+                  style: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
+                ),
+                enabled: !isProfileLimitReached,
+                onTap: isProfileLimitReached ? null : () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (final ctx) => const CreateProfileScreen(),
+                    ),
+                  );
+                },
+              ),
+              // Create Season option
+              ListTile(
+                leading: const Icon(
+                  Icons.calendar_today,
+                  color: AppColors.accent,
+                ),
+                title: Text(
+                  AppLocalizations.of(context).createSeasonTitle,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  AppLocalizations.of(context).addNewSeason,
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.6),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (final ctx) => const CreateSeasonScreen(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   /// Build footer with Deerflow branding
-  Widget _buildFooter() {
+  Widget _buildFooter(final BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
       color: AppColors.surfaceDark,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'Built with Flutter',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              fontSize: 12,
-              color: Colors.white.withValues(alpha: 0.6),
+          Flexible(
+            child: Text(
+              AppLocalizations.of(context).builtWithFlutter,
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 12,
+                color: Colors.white.withValues(alpha: 0.6),
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           // Deerflow branding - subtle mention
-          GestureDetector(
-            onTap: () {
-              // TODO(mickael): Open Deerflow link
-            },
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.flash_on,
-                  size: 14,
-                  color: AppColors.accent,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  'Deerflow',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 12,
-                    color: Colors.white.withValues(alpha: 0.6),
+          Flexible(
+            child: GestureDetector(
+              onTap: () {
+                // TODO(mickael): Open Deerflow link
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.flash_on,
+                    size: 14,
+                    color: AppColors.accent,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 4),
+                  Text(
+                    'Deerflow',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 12,
+                      color: Colors.white.withValues(alpha: 0.6),
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -273,13 +350,14 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return Card(
-      color: AppColors.surface,
-      elevation: 4,
+      color: AppColors.surfaceLight,
+      elevation: 8,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: AppColors.primary.withValues(alpha: 0.3),
+          color: AppColors.primary.withValues(alpha: 0.5),
+          width: 1.0,
         ),
       ),
       child: InkWell(
@@ -298,11 +376,11 @@ class ProfileCard extends StatelessWidget {
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  color: Color(profile.avatarColor),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withValues(alpha: 0.4),
+                      color: Color(profile.avatarColor).withValues(alpha: 0.4),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -356,9 +434,21 @@ class ProfileCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildStatItem(Icons.emoji_events, '12', 'Matches'),
-                  _buildStatItem(Icons.sports_soccer, '24', 'Goals'),
-                  _buildStatItem(Icons.assistant, '10', 'Assists'),
+                  _buildStatItem(
+                    Icons.emoji_events,
+                    '0',
+                    AppLocalizations.of(context).matchesLabel,
+                  ),
+                  _buildStatItem(
+                    Icons.sports_soccer,
+                    '0',
+                    AppLocalizations.of(context).goalsLabel,
+                  ),
+                  _buildStatItem(
+                    Icons.assistant,
+                    '0',
+                    AppLocalizations.of(context).assistsLabel,
+                  ),
                 ],
               ),
             ],

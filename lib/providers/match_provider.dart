@@ -14,7 +14,8 @@ import 'package:football_stat_track/providers/database_provider.dart';
 /// - Business rule: Only one match in progress per profile (R-07)
 class MatchNotifier extends StateNotifier<List<Match>> {
   
-  MatchNotifier(this._collection) : super([]);
+  MatchNotifier(this._isar, this._collection) : super([]);
+  final Isar _isar;
   final IsarCollection<Match> _collection;
 
   /// Load matches from database
@@ -42,8 +43,10 @@ class MatchNotifier extends StateNotifier<List<Match>> {
       return null;
     }
 
-    // Save to database
-    await _collection.put(match);
+    // Save to database (must be in transaction)
+    await _isar.writeTxn(() async {
+      await _collection.put(match);
+    });
     
     // Reload state
     await loadMatches();
@@ -64,8 +67,10 @@ class MatchNotifier extends StateNotifier<List<Match>> {
         ? match.addGoal()
         : match.removeGoal();
     
-    // Save to database
-    await _collection.put(updatedMatch);
+    // Save to database (must be in transaction)
+    await _isar.writeTxn(() async {
+      await _collection.put(updatedMatch);
+    });
     
     // Reload state
     await loadMatches();
@@ -86,8 +91,10 @@ class MatchNotifier extends StateNotifier<List<Match>> {
         ? match.addAssist()
         : match.removeAssist();
     
-    // Save to database
-    await _collection.put(updatedMatch);
+    // Save to database (must be in transaction)
+    await _isar.writeTxn(() async {
+      await _collection.put(updatedMatch);
+    });
     
     // Reload state
     await loadMatches();
@@ -103,8 +110,39 @@ class MatchNotifier extends StateNotifier<List<Match>> {
 
     final updatedMatch = match.endMatch();
     
-    // Save to database
-    await _collection.put(updatedMatch);
+    // Save to database (must be in transaction)
+    await _isar.writeTxn(() async {
+      await _collection.put(updatedMatch);
+    });
+    
+    // Reload state
+    await loadMatches();
+    return updatedMatch;
+  }
+
+  /// End a match with final stats (for when UI counters may be out of sync)
+  Future<Match?> endMatchWithStats(
+    final Id matchId,
+    final int finalGoals,
+    final int finalAssists,
+  ) async {
+    final match = await _collection.get(matchId);
+    if (match == null) {
+      return null;
+    }
+
+    // Create updated match with final stats
+    final updatedMatch = match.copyWith(
+      goals: finalGoals,
+      assists: finalAssists,
+      endTime: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+    
+    // Save to database (must be in transaction)
+    await _isar.writeTxn(() async {
+      await _collection.put(updatedMatch);
+    });
     
     // Reload state
     await loadMatches();
@@ -113,8 +151,10 @@ class MatchNotifier extends StateNotifier<List<Match>> {
 
   /// Delete a match by ID
   Future<bool> deleteMatch(final Id matchId) async {
-    // Delete from database
-    final success = await _collection.delete(matchId);
+    // Delete from database (must be in transaction)
+    final success = await _isar.writeTxn<bool>(() async {
+      return _collection.delete(matchId);
+    });
     
     // Reload state
     await loadMatches();
@@ -183,8 +223,9 @@ class MatchNotifier extends StateNotifier<List<Match>> {
 /// Watches the list of matches
 final matchesProvider = StateNotifierProvider<MatchNotifier, List<Match>>(
   (final ref) {
+    final isar = ref.watch(isarProvider);
     final collection = ref.watch(matchCollectionProvider);
-    final notifier = MatchNotifier(collection);
+    final notifier = MatchNotifier(isar, collection);
     notifier.loadMatches();
     return notifier;
   },

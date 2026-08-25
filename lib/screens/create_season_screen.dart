@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:football_stat_track/config/colors.dart';
+import 'package:football_stat_track/l10n/app_localizations.dart';
 import 'package:football_stat_track/models/season.dart';
 import 'package:football_stat_track/providers/season_provider.dart';
 
@@ -130,9 +131,9 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
           onPressed: () => Navigator.pop(context),
           color: Colors.white,
         ),
-        title: const Text(
-          'Create Season',
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context).createSeasonTitle,
+          style: const TextStyle(
             fontFamily: 'Roboto',
             fontWeight: FontWeight.bold,
           ),
@@ -154,7 +155,7 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
                 const SizedBox(height: 24),
                 
                 // Season input field
-                _buildSeasonField(),
+                _buildSeasonField(context),
                 const SizedBox(height: 16),
                 
                 // Season preview
@@ -273,13 +274,14 @@ class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {
   }
 
   /// Build season input field
-  Widget _buildSeasonField() {
+  Widget _buildSeasonField(final BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text(
-          'Season Name',
-          style: TextStyle(
+        Text(
+          l10n.seasonLabel,
+          style: const TextStyle(
             fontFamily: 'Roboto',
             fontSize: 14,
             fontWeight: FontWeight.bold,

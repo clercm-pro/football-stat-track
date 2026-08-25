@@ -22,48 +22,53 @@ const ChildProfileSchema = CollectionSchema(
       name: r'age',
       type: IsarType.long,
     ),
-    r'birthYear': PropertySchema(
+    r'avatarColor': PropertySchema(
       id: 1,
+      name: r'avatarColor',
+      type: IsarType.long,
+    ),
+    r'birthYear': PropertySchema(
+      id: 2,
       name: r'birthYear',
       type: IsarType.long,
     ),
     r'createdAt': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
     r'displayName': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'displayName',
       type: IsarType.string,
     ),
     r'firstName': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'firstName',
       type: IsarType.string,
     ),
     r'hashCode': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'hashCode',
       type: IsarType.long,
     ),
     r'initials': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'initials',
       type: IsarType.string,
     ),
     r'lastName': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'lastName',
       type: IsarType.string,
     ),
     r'nickname': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'nickname',
       type: IsarType.string,
     ),
     r'updatedAt': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'updatedAt',
       type: IsarType.dateTime,
     )
@@ -113,15 +118,16 @@ void _childProfileSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.age);
-  writer.writeLong(offsets[1], object.birthYear);
-  writer.writeDateTime(offsets[2], object.createdAt);
-  writer.writeString(offsets[3], object.displayName);
-  writer.writeString(offsets[4], object.firstName);
-  writer.writeLong(offsets[5], object.hashCode);
-  writer.writeString(offsets[6], object.initials);
-  writer.writeString(offsets[7], object.lastName);
-  writer.writeString(offsets[8], object.nickname);
-  writer.writeDateTime(offsets[9], object.updatedAt);
+  writer.writeLong(offsets[1], object.avatarColor);
+  writer.writeLong(offsets[2], object.birthYear);
+  writer.writeDateTime(offsets[3], object.createdAt);
+  writer.writeString(offsets[4], object.displayName);
+  writer.writeString(offsets[5], object.firstName);
+  writer.writeLong(offsets[6], object.hashCode);
+  writer.writeString(offsets[7], object.initials);
+  writer.writeString(offsets[8], object.lastName);
+  writer.writeString(offsets[9], object.nickname);
+  writer.writeDateTime(offsets[10], object.updatedAt);
 }
 
 ChildProfile _childProfileDeserialize(
@@ -131,13 +137,14 @@ ChildProfile _childProfileDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = ChildProfile(
-    birthYear: reader.readLongOrNull(offsets[1]),
-    createdAt: reader.readDateTime(offsets[2]),
-    firstName: reader.readStringOrNull(offsets[4]),
+    avatarColor: reader.readLongOrNull(offsets[1]) ?? 0xFF29BF12,
+    birthYear: reader.readLongOrNull(offsets[2]),
+    createdAt: reader.readDateTime(offsets[3]),
+    firstName: reader.readStringOrNull(offsets[5]),
     id: id,
-    lastName: reader.readStringOrNull(offsets[7]),
-    nickname: reader.readString(offsets[8]),
-    updatedAt: reader.readDateTime(offsets[9]),
+    lastName: reader.readStringOrNull(offsets[8]),
+    nickname: reader.readString(offsets[9]),
+    updatedAt: reader.readDateTime(offsets[10]),
   );
   return object;
 }
@@ -152,22 +159,24 @@ P _childProfileDeserializeProp<P>(
     case 0:
       return (reader.readLongOrNull(offset)) as P;
     case 1:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset) ?? 0xFF29BF12) as P;
     case 2:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readLong(offset)) as P;
-    case 6:
-      return (reader.readString(offset)) as P;
-    case 7:
       return (reader.readStringOrNull(offset)) as P;
-    case 8:
+    case 6:
+      return (reader.readLong(offset)) as P;
+    case 7:
       return (reader.readString(offset)) as P;
+    case 8:
+      return (reader.readStringOrNull(offset)) as P;
     case 9:
+      return (reader.readString(offset)) as P;
+    case 10:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -331,6 +340,62 @@ extension ChildProfileQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'age',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<ChildProfile, ChildProfile, QAfterFilterCondition>
+      avatarColorEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'avatarColor',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ChildProfile, ChildProfile, QAfterFilterCondition>
+      avatarColorGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'avatarColor',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ChildProfile, ChildProfile, QAfterFilterCondition>
+      avatarColorLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'avatarColor',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ChildProfile, ChildProfile, QAfterFilterCondition>
+      avatarColorBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'avatarColor',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1371,6 +1436,19 @@ extension ChildProfileQuerySortBy
     });
   }
 
+  QueryBuilder<ChildProfile, ChildProfile, QAfterSortBy> sortByAvatarColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'avatarColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ChildProfile, ChildProfile, QAfterSortBy>
+      sortByAvatarColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'avatarColor', Sort.desc);
+    });
+  }
+
   QueryBuilder<ChildProfile, ChildProfile, QAfterSortBy> sortByBirthYear() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'birthYear', Sort.asc);
@@ -1492,6 +1570,19 @@ extension ChildProfileQuerySortThenBy
   QueryBuilder<ChildProfile, ChildProfile, QAfterSortBy> thenByAgeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'age', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ChildProfile, ChildProfile, QAfterSortBy> thenByAvatarColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'avatarColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ChildProfile, ChildProfile, QAfterSortBy>
+      thenByAvatarColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'avatarColor', Sort.desc);
     });
   }
 
@@ -1625,6 +1716,12 @@ extension ChildProfileQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ChildProfile, ChildProfile, QDistinct> distinctByAvatarColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'avatarColor');
+    });
+  }
+
   QueryBuilder<ChildProfile, ChildProfile, QDistinct> distinctByBirthYear() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'birthYear');
@@ -1696,6 +1793,12 @@ extension ChildProfileQueryProperty
   QueryBuilder<ChildProfile, int?, QQueryOperations> ageProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'age');
+    });
+  }
+
+  QueryBuilder<ChildProfile, int, QQueryOperations> avatarColorProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'avatarColor');
     });
   }
 

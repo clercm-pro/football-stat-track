@@ -1,0 +1,107 @@
+{
+  "@@locale": "fr",
+  "@": {
+    "description": "StatTrack - Application de statistiques de football - Localisations Français"
+  },
+  
+  // App
+  "appTitle": "StatTrack",
+  
+  // Common
+  "ok": "OK",
+  "cancel": "Annuler",
+  "save": "Enregistrer",
+  "back": "Retour",
+  "home": "Accueil",
+  "createdByDeerflow": "Créé par Deerflow",
+  
+  // Errors
+  "errorTitle": "Une erreur est survenue",
+  "errorMessage": "Désolé. Veuillez redémarrer l'application.",
+  "restartButton": "Redémarrer",
+  
+  // Home Screen
+  "statTrackTitle": "STATTRACK",
+  "noProfiles": "Aucun profil pour l'instant",
+  "addFirstPlayer": "Appuyez sur + pour ajouter votre premier joueur",
+  
+  // Profile Screen
+  "recentMatches": "Matchs récents",
+  "selectSeason": "Sélectionner la saison",
+  "matchesLabel": "Matchs",
+  "goalsLabel": "Buts",
+  "assistsLabel": "Passes décisives",
+  "startMatchButton": "DÉMARRER UN MATCH",
+  "matchInProgressError": "Un match est déjà en cours pour ce profil",
+  
+  // Create Profile Screen
+  "createProfileTitle": "Créer un Profil",
+  "nicknameLabel": "Surnom *",
+  "nicknameHint": "Léo, Max, Emma...",
+  "nicknameRequired": "Le surnom est requis",
+  "nicknameMaxLength": "Maximum 20 caractères",
+  "firstNameLabel": "Prénom",
+  "firstNameHint": "Facultatif",
+  "lastNameLabel": "Nom",
+  "lastNameHint": "Facultatif",
+  "birthYearLabel": "Année de naissance",
+  "birthYearHint": "AAAA",
+  "birthYearInvalid": "Entrez une année valide",
+  "birthYearRange": "Année invalide",
+  "profileAvatar": "Avatar du Profil",
+  "avatarColor": "Couleur de l'Avatar",
+  "cancelButton": "ANNULER",
+  "saveProfileButton": "ENREGISTRER LE PROFIL",
+  "profileLimitWarning": "Vous pouvez créer jusqu'à 4 profils par appareil",
+  
+  // Create Season Screen
+  "createSeasonTitle": "Créer une Saison",
+  "seasonLabel": "Saison",
+  "seasonHint": "AAAA/AAAA+1",
+  "seasonRequired": "La saison est requise",
+  "seasonInvalid": "Entrez une saison valide (AAAA/AAAA+1)",
+  "seasonStartBeforeEnd": "L'année de début doit être avant l'année de fin",
+  "seasonYearRange": "L'année doit être entre 1900 et 2100",
+  "createSeasonButton": "CRÉER LA SAISON",
+  
+  // Match Screen
+  "matchTitle": "Match",
+  "startMatch": "Démarrer le match",
+  "endMatch": "Terminer le match",
+  "pauseMatch": "Pause",
+  "resumeMatch": "Reprendre",
+  "matchEnded": "Match terminé",
+  "matchInProgress": "Match en cours",
+  "noMatchInProgress": "Aucun match en cours",
+  "goals": "Buts",
+  "assists": "Passes",
+  "matchDuration": "Durée",
+  "matchStats": "Statistiques du match",
+  "endMatchConfirmation": "Terminer ce match ?",
+  "endMatchWarning": "Cette action est irréversible",
+  "yes": "Oui",
+  "no": "Non",
+  "minutes": "min",
+  
+  // Validation Messages
+  "requiredField": "Ce champ est requis",
+  "invalidFormat": "Format invalide",
+  "valueTooLow": "La valeur est trop basse",
+  "valueTooHigh": "La valeur est trop élevée",
+  
+  // Dialog Messages
+  "deleteProfileTitle": "Supprimer le profil",
+  "deleteProfileConfirmation": "Êtes-vous sûr de vouloir supprimer",
+  "actionCannotBeUndone": "Cette action est irréversible",
+  "delete": "Supprimer",
+  
+  // Footer
+  "builtWithFlutter": "Développé avec Flutter",
+  
+  // Placeholders
+  "enterNickname": "Entrez le surnom",
+  "enterFirstName": "Entrez le prénom",
+  "enterLastName": "Entrez le nom",
+  "enterBirthYear": "Entrez l'année de naissance",
+  "enterSeason": "Entrez la saison"
+}

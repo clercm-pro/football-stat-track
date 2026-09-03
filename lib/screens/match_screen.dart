@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
@@ -26,11 +25,6 @@ class MatchScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState<MatchScreen> createState() => _MatchScreenState();
 
-  @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ChildProfile>('profile', profile));
-  }
 }
 
 class _MatchScreenState extends ConsumerState<MatchScreen>
@@ -569,7 +563,7 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        bottom: false,
+        bottom: true,
         child: Column(
           children: [
             // Top row: arrow_back, LIVE badge, stop_circle
@@ -831,6 +825,10 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
     required final VoidCallback onTap,
     required final VoidCallback onLongPress,
   }) {
+    final hasBorder = borderColor != null;
+    final blurRadiusValue = hasBorder ? 3.0 : 6.0;
+    final offsetYValue = hasBorder ? 1.0 : 2.0;
+    
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
@@ -838,14 +836,14 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
         decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(22),
-          border: borderColor != null
+          border: hasBorder
               ? Border.all(color: borderColor, width: 1.5)
               : null,
           boxShadow: [
             BoxShadow(
               color: shadowColor,
-              blurRadius: borderColor != null ? 3.0 : 6.0,
-              offset: Offset(0, borderColor != null ? 1.0 : 2.0),
+              blurRadius: blurRadiusValue,
+              offset: Offset(0, offsetYValue),
             ),
           ],
         ),

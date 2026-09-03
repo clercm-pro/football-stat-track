@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:football_stat_track/config/colors.dart';
@@ -19,10 +18,6 @@ class CreateSeasonScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState<CreateSeasonScreen> createState() => _CreateSeasonScreenState();
 
-  @override
-  void debugFillProperties(final DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-  }
 }
 
 class _CreateSeasonScreenState extends ConsumerState<CreateSeasonScreen> {

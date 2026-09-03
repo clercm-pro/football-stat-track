@@ -522,3 +522,98 @@ Feature: Traduction des nouvelles chaînes de caractères du design Scoreboard
     And "You can create up to 4 players on this device. 3 used." devient "Vous pouvez créer jusqu'à 4 joueurs sur cet appareil. 3 utilisés."
     And "Save player" devient "Sauvegarder le joueur"
     And "Maximum profiles reached (4/4)" devient "Nombre maximal de profils atteint (4/4)"
+
+---
+
+## 🐛 BUG-AND-01: Android Crash - SafeArea Surface Control
+
+@BUG-AND-01 @high @regression @android @crash
+Feature: Prévention du crash Android lors du démarrage de match
+
+  Background:
+    Given Je suis sur Android 14+
+    And J'utilise un device avec IME (clavier logiciel)
+
+  @BUG-AND-01-1
+  Scenario: Crash avec SafeArea(bottom: false)
+    Given Je suis sur l'écran de match
+    When L'IME apparaît/disparaît
+    Then L'application crash avec "InteractionJankMonitor surface control error"
+
+  @BUG-AND-01-2
+  Scenario: Correction - SafeArea(bottom: true)
+    Given Je suis sur l'écran de match avec SafeArea(bottom: true)
+    When L'IME apparaît/disparaît
+    Then L'application ne crash pas
+    And L'UI reste stable
+
+---
+
+## 🐛 BUG-COM-01: Compilation - DiagnosticPropertiesBuilder
+
+@BUG-COM-01 @high @regression @compilation
+Feature: Correction de l'erreur de compilation dans ProfileScreen
+
+  Background:
+    Given Le projet utilise Flutter 3.x+
+
+  @BUG-COM-01-1
+  Scenario: Erreur de compilation avec debugFillProperties
+    Given ProfileScreen contient debugFillProperties avec DiagnosticPropertiesBuilder
+    When Je lance `flutter build apk`
+    Then La compilation échoue avec "Type 'DiagnosticPropertiesBuilder' not found"
+
+  @BUG-COM-01-2
+  Scenario: Correction - Suppression des méthodes de debug inutiles
+    Given ProfileScreen n'a plus debugFillProperties
+    When Je lance `flutter build apk`
+    Then La compilation réussit
+    And Aucune régression fonctionnelle
+
+---
+
+## 🐛 BUG-COM-02: Compilation - Offset non-constant
+
+@BUG-COM-02 @high @regression @compilation
+Feature: Correction de l'expression non-constante pour Offset
+
+  Background:
+    Given Le projet utilise Flutter 3.x+
+
+  @BUG-COM-02-1
+  Scenario: Erreur de compilation avec Offset ternaire
+    Given match_screen.dart contient Offset avec expression ternaire
+    When Je lance `flutter build apk`
+    Then La compilation échoue avec "Not a constant expression"
+
+  @BUG-COM-02-2
+  Scenario: Correction - Extraction de la valeur avant Offset
+    Given Les valeurs Y sont extraites avant BoxShadow
+    When Je lance `flutter build apk`
+    Then La compilation réussit
+
+---
+
+## 🐛 BUG-BY-01: Runtime - FormatException birthYear
+
+@BUG-BY-01 @high @regression @runtime
+Feature: Correction du parsing de l'année de naissance
+
+  Background:
+    Given L'utilisateur saisie une année de naissance
+
+  @BUG-BY-01-1
+  Scenario: FormatException avec caractères invalides
+    Given Je saisis "&^" dans le champ birthYear
+    When Je clique sur "Save player"
+    Then J'obtiens FormatException: Invalid radix-10 number
+
+  @BUG-BY-01-2
+  Scenario: Correction - Validation et tryParse
+    Given Le champ utilise int.tryParse et validation
+    When Je saisis "&^" dans birthYear
+    Then Je vois un message d'erreur sous le champ
+    And Le bouton Save reste désactivé
+    When Je saisis "2016"
+    Then La validation passe
+    And Le profil est sauvegardé avec birthYear = 2016

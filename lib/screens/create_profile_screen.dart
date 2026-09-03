@@ -82,13 +82,12 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
       return null;
     }
 
-    try {
-      final birthYear = int.parse(_birthYearController.text);
-      final age = DateTime.now().year - birthYear;
-      return '$age years old';
-    } on Exception {
+    final birthYear = int.tryParse(_birthYearController.text);
+    if (birthYear == null) {
       return null;
     }
+    final age = DateTime.now().year - birthYear;
+    return '$age years old';
   }
 
   /// Get first letter for avatar
@@ -112,6 +111,17 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
     if (_nicknameController.text.trim().length > 20) {
       return false;
     }
+    // Check if birth year is valid (if provided)
+    if (_birthYearController.text.trim().isNotEmpty) {
+      final birthYear = int.tryParse(_birthYearController.text.trim());
+      if (birthYear == null) {
+        return false;
+      }
+      // Check year range
+      if (birthYear < 1900 || birthYear > DateTime.now().year) {
+        return false;
+      }
+    }
     return true;
   }
 
@@ -131,7 +141,7 @@ class _CreateProfileScreenState extends ConsumerState<CreateProfileScreen> {
           : _lastNameController.text.trim(),
       birthYear: _birthYearController.text.trim().isEmpty
           ? null
-          : int.parse(_birthYearController.text.trim()),
+          : int.tryParse(_birthYearController.text.trim()),
       avatarColor: _avatarColor.toARGB32(),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),

@@ -105,14 +105,16 @@ class AppLocalizations {
     'addProfileTooltip': 'Add a new profile',
     
     // Create Season Screen
-    'createSeasonTitle': 'Create Season',
+    'createSeasonTitle': 'New season',
     'seasonLabel': 'Season',
     'seasonHint': 'YYYY/YYYY+1',
     'seasonRequired': 'Season is required',
     'seasonInvalid': 'Enter a valid season (YYYY/YYYY+1)',
     'seasonStartBeforeEnd': 'Start year must be before end year',
     'seasonYearRange': 'Year must be between 1900 and 2100',
-    'createSeasonButton': 'CREATE SEASON',
+    'createSeasonButton': 'Create season',
+    'seasonInfo': 'A season runs from September to June and spans two years',
+    'quickSelect': 'Quick select',
     
     // Match Screen
     'matchTitle': 'Match',
@@ -229,14 +231,16 @@ class AppLocalizations {
     'addProfileTooltip': 'Ajouter un nouveau profil',
     
     // Create Season Screen
-    'createSeasonTitle': 'Créer une Saison',
+    'createSeasonTitle': 'Nouvelle saison',
     'seasonLabel': 'Saison',
     'seasonHint': 'AAAA/AAAA+1',
     'seasonRequired': 'La saison est requise',
     'seasonInvalid': 'Entrez une saison valide (AAAA/AAAA+1)',
     'seasonStartBeforeEnd': 'L\'année de début doit être avant l\'année de fin',
     'seasonYearRange': 'L\'année doit être entre 1900 et 2100',
-    'createSeasonButton': 'CRÉER LA SAISON',
+    'createSeasonButton': 'Créer la saison',
+    'seasonInfo': 'Une saison va de septembre à juin et couvre deux années',
+    'quickSelect': 'Sélection rapide',
     
     // Match Screen
     'matchTitle': 'Match',
@@ -375,6 +379,8 @@ class AppLocalizations {
   String get seasonStartBeforeEnd => translate('seasonStartBeforeEnd');
   String get seasonYearRange => translate('seasonYearRange');
   String get createSeasonButton => translate('createSeasonButton');
+  String get seasonInfo => translate('seasonInfo');
+  String get quickSelect => translate('quickSelect');
 
   // Match Screen
   String get matchTitle => translate('matchTitle');

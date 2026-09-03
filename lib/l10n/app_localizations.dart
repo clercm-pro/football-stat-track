@@ -113,21 +113,31 @@ class AppLocalizations {
     // Match Screen
     'matchTitle': 'Match',
     'startMatch': 'Start Match',
-    'endMatch': 'End Match',
+    'endMatch': 'End match',
     'pauseMatch': 'Pause',
     'resumeMatch': 'Resume',
+    'resumeTimer': 'Resume timer',
     'matchEnded': 'Match Ended',
     'matchInProgress': 'Match in Progress',
     'noMatchInProgress': 'No match in progress',
-    'goals': 'Goals',
-    'assists': 'Assists',
-    'matchDuration': 'Duration',
+    'goals': 'GOALS',
+    'assists': 'ASSISTS',
+    'matchDuration': 'DURATION',
     'matchStats': 'Match Stats',
     'endMatchConfirmation': 'End this match?',
     'endMatchWarning': 'This cannot be undone',
     'yes': 'Yes',
     'no': 'No',
     'minutes': 'min',
+    'live': 'LIVE',
+    'tapToAdd': 'Tap to add',
+    'counterInstructions': 'Short press = +1 • Long press = -1',
+    'matchCompleted': 'MATCH COMPLETED',
+    'saveMatch': 'Save match',
+    'savedToSeason': 'Saved to season',
+    'willBeAt': 'will be at',
+    'goalsIn': 'goals in',
+    'matchesPeriod': 'matches',
     
     // Validation Messages
     'requiredField': 'This field is required',
@@ -226,18 +236,28 @@ class AppLocalizations {
     'endMatch': 'Terminer le match',
     'pauseMatch': 'Pause',
     'resumeMatch': 'Reprendre',
+    'resumeTimer': 'Reprendre le chrono',
     'matchEnded': 'Match terminé',
     'matchInProgress': 'Match en cours',
     'noMatchInProgress': 'Aucun match en cours',
-    'goals': 'Buts',
-    'assists': 'Passes',
-    'matchDuration': 'Durée',
+    'goals': 'BUTS',
+    'assists': 'PASS. D.',
+    'matchDuration': 'DURÉE',
     'matchStats': 'Statistiques du match',
     'endMatchConfirmation': 'Terminer ce match ?',
     'endMatchWarning': 'Cette action est irréversible',
     'yes': 'Oui',
     'no': 'Non',
     'minutes': 'min',
+    'live': 'EN DIRECT',
+    'tapToAdd': 'Appuyez pour ajouter',
+    'counterInstructions': 'Appui court = +1 • Appui long = -1',
+    'matchCompleted': 'MATCH TERMINÉ',
+    'saveMatch': 'Sauvegarder le match',
+    'savedToSeason': 'Enregistré dans la saison',
+    'willBeAt': 'aura',
+    'goalsIn': 'buts en',
+    'matchesPeriod': 'matchs',
     
     // Validation Messages
     'requiredField': 'Ce champ est requis',
@@ -350,6 +370,7 @@ class AppLocalizations {
   String get endMatch => translate('endMatch');
   String get pauseMatch => translate('pauseMatch');
   String get resumeMatch => translate('resumeMatch');
+  String get resumeTimer => translate('resumeTimer');
   String get matchEnded => translate('matchEnded');
   String get matchInProgress => translate('matchInProgress');
   String get noMatchInProgress => translate('noMatchInProgress');
@@ -362,6 +383,15 @@ class AppLocalizations {
   String get yes => translate('yes');
   String get no => translate('no');
   String get minutes => translate('minutes');
+  String get live => translate('live');
+  String get tapToAdd => translate('tapToAdd');
+  String get counterInstructions => translate('counterInstructions');
+  String get matchCompleted => translate('matchCompleted');
+  String get saveMatch => translate('saveMatch');
+  String get savedToSeason => translate('savedToSeason');
+  String get willBeAt => translate('willBeAt');
+  String get goalsIn => translate('goalsIn');
+  String get matchesPeriod => translate('matchesPeriod');
 
   // Validation Messages
   String get requiredField => translate('requiredField');

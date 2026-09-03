@@ -13,6 +13,27 @@ import 'package:football_stat_track/providers/child_profile_provider.dart';
 /// - Fields: Nickname*, First name, Last name (side by side), Birth year
 /// - Info note: profile limit indicator
 /// - Bottom: Cancel (110×56 outlined) and Save player (flex, #01584A) buttons
+///
+/// @gherkin
+/// @BUG-BY-01 @high @regression @runtime
+/// Feature: Birth year parsing validation
+///
+///   Background:
+///     Given User enters birth year in create profile form
+///
+///   @BUG-BY-01-1
+///   Scenario: FormatException with invalid characters
+///     Given I enter "&^" in birthYear field
+///     When I tap "Save player"
+///     Then I get FormatException with "Invalid radix-10 number"
+///
+///   @BUG-BY-01-2
+///   Scenario: Successful save with valid birth year
+///     Given I enter "2016" in birthYear field
+///     And Nickname field is filled
+///     When I tap "Save player"
+///     Then Profile is saved with birthYear = 2016
+///     And No exception is thrown
 class CreateProfileScreen extends ConsumerStatefulWidget {
   const CreateProfileScreen({super.key});
 

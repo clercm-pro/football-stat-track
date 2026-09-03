@@ -12,6 +12,22 @@ import 'package:football_stat_track/providers/season_provider.dart';
 /// - Season field with validation
 /// - Info note with season explanation
 /// - Bottom: Cancel and Create season buttons
+///
+/// @gherkin
+/// @BUG-COM-01 @high @regression @compilation
+/// Feature: CreateSeasonScreen compilation without debug methods
+///
+///   @BUG-COM-01-3
+///   Scenario: Compilation fails with debugFillProperties in CreateSeasonScreen
+///     Given CreateSeasonScreen contains debugFillProperties method
+///     When Running flutter build apk
+///     Then Compilation fails with "DiagnosticPropertiesBuilder not found"
+///
+///   @BUG-COM-01-4
+///   Scenario: Compilation succeeds without debug methods in CreateSeasonScreen
+///     Given CreateSeasonScreen has no debugFillProperties method
+///     When Running flutter build apk
+///     Then Compilation succeeds
 class CreateSeasonScreen extends ConsumerStatefulWidget {
   const CreateSeasonScreen({super.key});
 

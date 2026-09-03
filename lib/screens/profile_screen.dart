@@ -16,6 +16,25 @@ import 'package:football_stat_track/screens/match_screen.dart';
 /// - Match log section with season selector
 /// - Match history list
 /// - Start a match CTA button
+///
+/// @gherkin
+/// @BUG-COM-01 @high @regression @compilation
+/// Feature: ProfileScreen compilation without debug methods
+///
+///   Background:
+///     Given Flutter 3.x+ project
+///
+///   @BUG-COM-01-1
+///   Scenario: Compilation fails with DiagnosticPropertiesBuilder
+///     Given ProfileScreen contains debugFillProperties method
+///     When Running flutter build apk
+///     Then Compilation fails with "DiagnosticPropertiesBuilder not found"
+///
+///   @BUG-COM-01-2
+///   Scenario: Compilation succeeds without debug methods
+///     Given ProfileScreen has no debugFillProperties method
+///     When Running flutter build apk
+///     Then Compilation succeeds
 class ProfileScreen extends ConsumerWidget {
 
   const ProfileScreen({required this.profile, super.key});

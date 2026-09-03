@@ -17,6 +17,45 @@ import 'package:football_stat_track/providers/season_provider.dart';
 /// - Instruction line: "Short press = +1 • Long press = -1"
 /// - Bottom row: Cancel and End match buttons
 /// - Match summary: Bottom sheet (#3b)
+///
+/// @gherkin
+/// @BUG-AND-01 @high @regression @android @crash
+/// Feature: SafeArea Android IME compatibility
+///
+///   Background:
+///     Given Android 14+ device
+///     And IME (soft keyboard) is enabled
+///
+///   @BUG-AND-01-1
+///   Scenario: Application crashes with SafeArea bottom false
+///     Given MatchScreen uses SafeArea(bottom: false)
+///     When IME appears or disappears
+///     Then Application crashes with "InteractionJankMonitor surface control error"
+///
+///   @BUG-AND-01-2
+///   Scenario: Application stable with SafeArea bottom true
+///     Given MatchScreen uses SafeArea(bottom: true)
+///     When IME appears or disappears
+///     Then Application remains stable
+///
+/// @gherkin
+/// @BUG-COM-02 @high @regression @compilation
+/// Feature: Non-constant Offset expression in BoxShadow
+///
+///   Background:
+///     Given Flutter 3.x+ project
+///
+///   @BUG-COM-02-1
+///   Scenario: Compilation fails with non-constant Offset
+///     Given BoxShadow contains Offset with ternary expression
+///     When Running flutter build apk
+///     Then Compilation fails with "Not a constant expression"
+///
+///   @BUG-COM-02-2
+///   Scenario: Compilation succeeds with extracted values
+///     Given Offset values are extracted before BoxShadow
+///     When Running flutter build apk
+///     Then Compilation succeeds
 class MatchScreen extends ConsumerStatefulWidget {
 
   const MatchScreen({required this.profile, super.key});

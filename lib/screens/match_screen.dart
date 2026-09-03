@@ -844,8 +844,8 @@ class _MatchScreenState extends ConsumerState<MatchScreen>
           boxShadow: [
             BoxShadow(
               color: shadowColor,
-              blurRadius: borderColor != null ? 3 : 6,
-              offset: const Offset(0, borderColor != null ? 1 : 2),
+              blurRadius: borderColor != null ? 3.0 : 6.0,
+              offset: Offset(0, borderColor != null ? 1.0 : 2.0),
             ),
           ],
         ),

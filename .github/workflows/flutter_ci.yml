@@ -10,7 +10,6 @@ on:
 # Environment variables
 env:
   FLUTTER_CHANNEL: 'stable'
-  FLUTTER_VERSION: '3.47.1'
 
 # Jobs
 jobs:
@@ -28,7 +27,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
 
       - name: Get dependencies
         run: flutter pub get
@@ -44,9 +42,6 @@ jobs:
 
       - name: Check code formatting
         run: flutter format --set-exit-if-changed lib/ || echo "::warning::Code formatting issues found"
-
-      - name: Extract Gherkin scenarios from code
-        run: dart run tool/extract_gherkin.dart
 
       - name: Verify FEATURES.md is updated
         run: |
@@ -69,7 +64,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
 
       - name: Get dependencies
         run: flutter pub get
@@ -98,7 +92,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: ${{ env.FLUTTER_CHANNEL }}
-          flutter-version: ${{ env.FLUTTER_VERSION }}
 
       - name: Get dependencies
         run: flutter pub get

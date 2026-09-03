@@ -34,11 +34,11 @@ After a successful build, you can download the debug APK from the workflow artif
 
 ## 🔧 Customization
 
-### Change Flutter Version
-Edit the `FLUTTER_VERSION` environment variable in the workflow file:
+### Change Flutter Channel
+Edit the `FLUTTER_CHANNEL` environment variable in the workflow file:
 ```yaml
 env:
-  FLUTTER_VERSION: 'stable'  # Uses latest stable Flutter version
+  FLUTTER_CHANNEL: 'stable'  # Uses latest stable Flutter version
 ```
 
 **Note:** Latest stable Flutter supports intl 0.20.x (required by this project).

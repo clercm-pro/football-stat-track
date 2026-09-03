@@ -9,7 +9,7 @@ on:
 
 # Environment variables
 env:
-  FLUTTER_VERSION: 'stable'
+  FLUTTER_CHANNEL: 'stable'
 
 # Jobs
 jobs:
@@ -26,8 +26,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
+          channel: ${{ env.FLUTTER_CHANNEL }}
 
       - name: Get dependencies
         run: flutter pub get
@@ -67,8 +66,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
+          channel: ${{ env.FLUTTER_CHANNEL }}
 
       - name: Get dependencies
         run: flutter pub get
@@ -96,8 +94,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
+          channel: ${{ env.FLUTTER_CHANNEL }}
 
       - name: Get dependencies
         run: flutter pub get

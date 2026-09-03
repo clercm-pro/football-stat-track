@@ -76,23 +76,27 @@ class AppLocalizations {
     'matchInProgressError': 'A match is already in progress for this profile',
     
     // Create Profile Screen
-    'createProfileTitle': 'Create Profile',
+    'createProfileTitle': 'New player',
     'nicknameLabel': 'Nickname *',
     'nicknameHint': 'Leo, Max, Emma...',
     'nicknameRequired': 'Nickname is required',
     'nicknameMaxLength': 'Max 20 characters',
-    'firstNameLabel': 'First Name',
+    'firstNameLabel': 'First name',
     'firstNameHint': 'Optional',
-    'lastNameLabel': 'Last Name',
+    'lastNameLabel': 'Last name',
     'lastNameHint': 'Optional',
-    'birthYearLabel': 'Birth Year',
+    'birthYearLabel': 'Birth year',
     'birthYearHint': 'YYYY',
     'birthYearInvalid': 'Enter a valid year',
     'birthYearRange': 'Invalid year',
     'profileAvatar': 'Profile Avatar',
+    'avatarColour': 'AVATAR COLOUR',
     'avatarColor': 'Avatar Color',
-    'cancelButton': 'CANCEL',
-    'saveProfileButton': 'SAVE PROFILE',
+    'optional': 'Optional',
+    'newPlayerTitle': 'New player',
+    'savePlayerButton': 'Save player',
+    'profileLimitInfo': 'You can create up to 4 players on this device',
+    'usedPeriod': 'used',
     'profileLimitWarning': 'You can create up to 4 profiles per device',
     'addNewPlayer': 'Add a new player',
     'addNewSeason': 'Add a new season',
@@ -196,23 +200,27 @@ class AppLocalizations {
     'matchInProgressError': 'Un match est déjà en cours pour ce profil',
     
     // Create Profile Screen
-    'createProfileTitle': 'Créer un Profil',
+    'createProfileTitle': 'Nouveau joueur',
     'nicknameLabel': 'Surnom *',
     'nicknameHint': 'Léo, Max, Emma...',
     'nicknameRequired': 'Le surnom est requis',
     'nicknameMaxLength': 'Maximum 20 caractères',
     'firstNameLabel': 'Prénom',
-    'firstNameHint': 'Facultatif',
+    'firstNameHint': 'Optional',
     'lastNameLabel': 'Nom',
-    'lastNameHint': 'Facultatif',
+    'lastNameHint': 'Optional',
     'birthYearLabel': 'Année de naissance',
     'birthYearHint': 'AAAA',
     'birthYearInvalid': 'Entrez une année valide',
     'birthYearRange': 'Année invalide',
     'profileAvatar': 'Avatar du Profil',
+    'avatarColour': 'COULEUR AVATAR',
     'avatarColor': 'Couleur de l\'Avatar',
-    'cancelButton': 'ANNULER',
-    'saveProfileButton': 'ENREGISTRER LE PROFIL',
+    'optional': 'Facultatif',
+    'newPlayerTitle': 'Nouveau joueur',
+    'savePlayerButton': 'Sauvegarder le joueur',
+    'profileLimitInfo': 'Vous pouvez créer jusqu\'à 4 joueurs sur cet appareil',
+    'usedPeriod': 'utilisés',
     'profileLimitWarning': 'Vous pouvez créer jusqu\'à 4 profils par appareil',
     'addNewPlayer': 'Ajouter un nouveau joueur',
     'addNewSeason': 'Ajouter une nouvelle saison',
@@ -343,9 +351,13 @@ class AppLocalizations {
   String get birthYearInvalid => translate('birthYearInvalid');
   String get birthYearRange => translate('birthYearRange');
   String get profileAvatar => translate('profileAvatar');
+  String get avatarColour => translate('avatarColour');
   String get avatarColor => translate('avatarColor');
-  String get cancelButton => translate('cancelButton');
-  String get saveProfileButton => translate('saveProfileButton');
+  String get optional => translate('optional');
+  String get newPlayerTitle => translate('newPlayerTitle');
+  String get savePlayerButton => translate('savePlayerButton');
+  String get profileLimitInfo => translate('profileLimitInfo');
+  String get usedPeriod => translate('usedPeriod');
   String get profileLimitWarning => translate('profileLimitWarning');
   String get addNewPlayer => translate('addNewPlayer');
   String get addNewSeason => translate('addNewSeason');

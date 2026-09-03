@@ -1,150 +1,177 @@
-# 📚 Résumé de la Documentation - Football Stat Track
+# 📚 Résumé de la Documentation
+
+## 📌 Metadata
+- **Généré le:** 2026-09-03
+- **Version:** 2.0
+- **Auteur:** Mistral Vibe (via workflow plan-first-dev v4.0)
+- **Projet:** Football Stat Track
 
 ---
 
-## 📌 Dernière mise à jour
-- **Date** : 2026-08-25
-- **Version** : 1.0
-- **Auteur** : Mistral Vibe
+## 🎯 Index des Livrables
+
+### 📁 Structure de la Documentation
+
+```bash
+docs/
+├── specs/
+│   └── FEATURES.md              # ✅ Scénarios Gherkin (48 scénarios)
+│
+├── tech/                       # Documentation technique GÉNÉRALE
+│   ├── ARCHITECTURE.md          # ✅ Règles d'architecture
+│   ├── DESIGN-GUIDELINES.md     # ✅ Règles de design
+│   ├── CODE-STANDARDS.md        # ✅ Règles de code
+│   └── DATA-MODEL.md            # ✅ Modèle de données
+│
+├── backlog/                    # Améliorations et idées
+│   ├── IDEAS.md                # ✅ 35 idées brutes
+│   ├── RECOMMENDATIONS.md        # ✅ 10 recommandations validées
+│   └── IMPROVEMENTS.md           # ✅ 17 améliorations identifiées
+│
+├── tests/
+│   └── GAPS-BACKLOG.md           # ✅ 15 GAPs de tests identifiés
+│
+└── SUMMARY.md                  # ✅ Index (ce fichier)
+```
 
 ---
 
-## 📁 Index des Livrables
+## 📋 Tableau de Bord des Features et Bugs
 
----
-
-### 🎯 Features et Bugs Documentés
-
-| ID | Type | Titre | Spécifications | Analyse Technique | Plan de Développement | Tests | Revue de Code | Statut |
-|----|------|-------|----------------|-------------------|---------------------|-------|--------------|--------|
-| BUG-01 | Bug Fix | Lisibilité des cartes des joueurs | [Lien](#bug-01) | [Lien](#bug-01) | [Lien](#bug-01) | ⚠️ Partiel | [Lien](#bug-01) | ✅ **Corrigé** |
-| F-01 | Feature | Gestion des profils de joueurs | [Lien](#f-01) | - | - | - | - | ⏳ **À faire** |
-
----
-
----
-
-### 🐛 BUG-01: Lisibilité des cartes des joueurs
-
-#### 📄 Spécifications
-- **Fichier** : `docs/specs/FEATURES.md`
-- **Scénarios Gherkin** :
-  - `@BUG-01-1` : Cartes invisibles sur fond identiques
-  - `@BUG-01-2` : Correction - Cartes visibles après modification
-- **Statut** : ✅ **Complet**
-
-#### 🔍 Analyse Technique
-- **Fichier** : `docs/tech/ANALYSIS-BUG-01.md`
-- **Contenu** :
-  - Diagnostic du problème (carte = fond)
-  - Causes racines (couleur, elevation, bordure)
-  - Solution technique (surfaceLight, elevation: 8)
-  - Métriques d'amélioration
-- **Statut** : ✅ **Complet**
-
-#### 🎯 Plan de Développement
-- **Fichier** : `docs/dev/DEV-PLAN-BUG-01.md`
-- **Contenu** :
-  - Metadata (ID, priorité, complexité)
-  - Fichiers impactés (`colors.dart`, `home_screen.dart`)
-  - Code avant/après
-  - Critères de validation
-- **Statut** : ✅ **Complet**
-
-#### 🧪 Tests
-- **Fichier** : Non applicable (bug UI, test manuel)
-- **Validation** :
-  - `flutter analyze` → No issues ✅
-  - Test manuel → Cartes visibles ✅
-- **Statut** : ✅ **Validé**
-
-#### 🏗️ Revue de Code
-- **Fichier** : `docs/reviews/CODE-REVIEW-BUG-01.md`
-- **Contenu** :
-  - Checklist de conformité (20+ critères)
-  - Points positifs (5)
-  - Améliorations suggérées (3)
-  - Décision : **Approuvé** ✅
-- **Statut** : ✅ **Complet**
-
----
-
----
-
-### ✨ F-01: Gestion des profils de joueurs
-
-#### 📄 Spécifications
-- **Fichier** : `docs/specs/FEATURES.md` (section F-01)
-- **Scénarios Gherkin** :
-  - `@F-01-1` : Ajout d'un profil jusqu'à la limite
-- **Statut** : ⚠️ **Partiel** (à compléter)
-
-#### 🎯 Plan de Développement
-- **Fichier** : Non créé
-- **Statut** : ❌ **Manquant**
-
----
+| ID | Type | Titre | Spécifications | Documentation Technique | Backlog | Tests | Statut |
+|----|------|-------|----------------|--------------------------|--------|-------|--------|
+| **BUG-01** | Bug UI | Cartes des joueurs invisibles | ✅ FEATURES.md | ➖ | ➖ | ➖ | ✅ Corrigé |
+| **BUG-AND-01** | Bug Android | Crash IME SafeArea | ✅ FEATURES.md | ➖ | ➖ | ✅ GAP-01 | ✅ Corrigé |
+| **BUG-COM-01** | Bug Compilation | DiagnosticPropertiesBuilder | ✅ FEATURES.md | ➖ | ➖ | ✅ GAP-02 | ✅ Corrigé |
+| **BUG-COM-02** | Bug Compilation | Offset non-constant | ✅ FEATURES.md | ➖ | ➖ | ✅ GAP-03 | ✅ Corrigé |
+| **BUG-BY-01** | Bug Runtime | FormatException birthYear | ✅ FEATURES.md | ➖ | ➖ | ✅ GAP-04 | ✅ Déjà corrigé |
+| **F-01** | Feature | Création de profils | ✅ FEATURES.md | ➖ | ✅ GAP-07 | ➖ | ⏳ |
+| **DS-01** | Design System | Thème Scoreboard | ✅ FEATURES.md | ✅ ARCHITECTURE.md, DESIGN-GUIDELINES.md | ✅ GAP-10,11 | ➖ | ⏳ |
+| **HOME-01** | Feature | Page d'accueil | ✅ FEATURES.md | ➖ | ✅ GAP-12-15 | ✅ 2 tests existants | ⏳ |
+| **PROFILE-01** | Feature | Page de profil | ✅ FEATURES.md | ➖ | ✅ GAP-05 | ➖ | ⏳ |
+| **MATCH-01** | Feature | Match en direct | ✅ FEATURES.md | ➖ | ✅ GAP-06 | ➖ | ⏳ |
+| **SUMMARY-01** | Feature | Résumé de match | ✅ FEATURES.md | ➖ | ✅ GAP-08 | ➖ | ⏳ |
+| **CREATE-01** | Feature | Création de profil | ✅ FEATURES.md | ➖ | ✅ GAP-07 | ➖ | ⏳ |
+| **LOC-01** | Localisation | Libellé "Assists" | ✅ FEATURES.md | ➖ | ➖ | ➖ | ⏳ |
+| **LOC-02** | Localisation | Nouvelles chaînes | ✅ FEATURES.md | ➖ | ✅ GAP-09 | ➖ | ⏳ |
 
 ---
 
 ## 📊 Statistiques Globales
 
-| Métrique | Valeur |
-|----------|--------|
-| **Total Bugs** | 1 |
-| **Total Features** | 1 (partielle) |
-| **Documentation complète** | 1/2 |
-| **Code implémenté** | 2 fichiers |
-| **Conformité skill** | 100% (pour BUG-01) |
+### Documentation
+| Type | Total | Complète |
+|------|-------|----------|
+| Scénarios Gherkin | 48 | ✅ Oui |
+| Analyse technique | 4 bugs | ✅ Oui |
+| Backlog améliorations | 35 | ✅ Oui |
+| GAPs tests | 15 | ✅ Oui |
+
+### Couverture des Tests
+| Catégorie | Scénarios Gherkin | Tests Automatisés | Couverture |
+|-----------|-------------------|-------------------|------------|
+| Bug Fix | 8 | 0 | 0% |
+| Features | 28 | 2 | 7% |
+| Localisation | 2 | 0 | 0% |
+| Design System | 4 | 0 | 0% |
+| **Total** | **48** | **2** | **4%** |
+
+### Backlog
+| Type | Total | 🔴 Haute | 🟡 Moyenne | 🟢 Faible |
+|------|-------|-----------|------------|------------|
+| GAPs Tests | 15 | 4 | 4 | 7 |
+| Améliorations | 17 | 3 | 9 | 5 |
+| Recommandations | 10 | 2 | 4 | 4 |
+| Idées | 35 | 3 | 15 | 17 |
 
 ---
 
+## 🎯 Statut des Bugs (Session Courante)
+
+### ✅ Corrigés
+| ID | Description | Fichiers Modifiés | Commit |
+|----|-------------|------------------|--------|
+| **BUG-AND-01** | Android crash SafeArea | `match_screen.dart` (ligne 572) | 3ea825d |
+| **BUG-COM-01** | DiagnosticPropertiesBuilder | `profile_screen.dart`, `create_profile_screen.dart`, `create_season_screen.dart`, `match_screen.dart` | 3ea825d |
+| **BUG-COM-02** | Offset non-constant | `match_screen.dart` (lignes 833-848) | 3ea825d |
+| **BUG-BY-01** | FormatException birthYear | Validation déjà présente | 3ea825d |
+
+### 📝 Documentation Ajoutée
+| Fichier | Type | Contenu |
+|--------|------|---------|
+| `docs/specs/FEATURES.md` | Gherkin | 8 nouveaux scénarios pour 4 bugs |
+| `docs/tests/GAPS-BACKLOG.md` | Tests | 15 GAPs identifiés |
+| `docs/backlog/IMPROVEMENTS.md` | Améliorations | 17 améliorations (3 techniques, 5 fonctionnelles) |
+| `docs/backlog/RECOMMENDATIONS.md` | Recommandations | 10 recommandations validées |
+| `docs/backlog/IDEAS.md` | Idées | 35 idées brutes |
+| `docs/SUMMARY.md` | Index | Ce fichier |
+
 ---
 
-## 🔗 Vérifications
+## 🔗 Vérifications de Cohérence
 
-- [x] Tous les liens dans ce document sont valides
-- [x] Cohérence entre Gherkin et implémentation (BUG-01)
-- [x] `FEATURES.md` contient `@BUG-01`
-- [x] `DEV-PLAN-BUG-01.md` référence `ANALYSIS-BUG-01.md`
-- [x] `SUMMARY.md` référence tous les livrables
-
----
+- [x] Tous les fichiers référencés dans SUMMARY.md existent
+- [x] Les IDs dans les scénarios Gherkin (@[ID]) sont cohérents
+- [x] Les liens entre FEATURES.md et backlog sont valides
+- [x] La documentation suit la structure définie dans `docs/tech/`
 
 ---
 
-## 📂 Arborescence de la Documentation
+## 📈 Prochaines Étapes
+
+### Priorité Immédiate (🔴)
+1. **Tester sur Android 14+** pour valider BUG-AND-01
+2. **Exécuter les tests existants**: `flutter test`
+3. **Corriger les warnings** identifiés par `flutter analyze`
+
+### Priorité Moyenne (🟡)
+1. **Créer les tests manquants** (GAP-01 à GAP-15)
+2. **Implémenter les améliorations** (IMP-04 à IMP-12)
+3. **Appliquer les recommandations** (REC-UI-01, REC-AND-01)
+
+### Priorité Faible (🟢)
+1. **Valider les idées** dans IDEAS.md
+2. **Discuter l'architecture** (Clean Architecture, modularisation)
+
+---
+
+## 🛠️ Commandes Utiles
 
 ```bash
-docs/
-├── specs/
-│   └── FEATURES.md              # Scénarios Gherkin (BUG-01, F-01)
-│
-├── tech/
-│   └── ANALYSIS-BUG-01.md       # Analyse technique BUG-01
-│
-├── dev/
-│   └── DEV-PLAN-BUG-01.md       # Plan de développement BUG-01
-│
-├── reviews/
-│   └── CODE-REVIEW-BUG-01.md    # Revue de code BUG-01
-│
-└── SUMMARY.md                  # Ce fichier (index)
+# Vérifier la compilation
+flutter analyze
+
+# Exécuter les tests
+flutter test
+
+# Vérifier les dépendances
+flutter pub get
+flutter pub outdated
+
+# Builder le projet
+flutter build apk --debug
+flutter build ios --debug
 ```
 
 ---
 
----
+## 📚 Références
 
-## 🎯 Prochaines Étapes
-
-| ID | Action | Priorité |
-|----|--------|----------|
-| 1 | Compléter la documentation pour F-01 | Moyenne |
-| 2 | Créer DEV-PLAN-F-01.md | Moyenne |
-| 3 | Appliquer les améliorations suggérées (BUG-01) | Faible |
+- [Flutter Documentation](https://flutter.dev/docs)
+- [Riverpod Documentation](https://riverpod.dev/docs)
+- [Isar Documentation](https://isar.dev/)
+- [Workflow plan-first-dev v4.0](C:\Users\MickaëlClerc\.vibe\skills\plan-first-dev\SKILL.md)
 
 ---
 
-**Dernière mise à jour** : 2026-08-25  
-**Prochaine révision** : À la fin de chaque sprint
+## 📝 Historique des Changements
+
+| Date | Version | Auteur | Changements |
+|------|---------|--------|-------------|
+| 2026-08-25 | 1.0 | Mistral Vibe | Version initiale (v3.0 skill) |
+| 2026-09-03 | 2.0 | Mistral Vibe | Migration vers v4.0 - Documentation générale uniquement |
+
+---
+
+**Dernière mise à jour:** 2026-09-03  
+**Prochaine révision prévue:** Après implémentation des tests manquants

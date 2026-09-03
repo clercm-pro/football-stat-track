@@ -643,6 +643,9 @@ Feature: Correction du parsing de l'année de naissance
 
 ---
 
+
+---
+
 ## 🔧 Code-Embedded Gherkin Scenarios
 
 *Auto-generated from `@gherkin` annotations in code*
@@ -651,7 +654,7 @@ Feature: Correction du parsing de l'année de naissance
 |--------|-------|
 | **Scenarios** | 4 |
 | **Features** | 3 |
-| **Generated** | 2026-09-03T15:53:37.030720 |
+| **Generated** | 2026-09-03T15:59:52.275678 |
 
 
 @BUG-BY-01 @high @regression @runtime

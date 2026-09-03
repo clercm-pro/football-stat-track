@@ -1,0 +1,10 @@
+Fichier placeholder pour HOME-SCREEN-V1.png
+
+Pour générer cette image:
+1. Ouvrez: ../image_prompts/HOME-SCREEN-PROMPT.md
+2. Utilisez le prompt avec DALL·E 3, MidJourney, ou Stable Diffusion
+3. Enregistrez l'image générée sous: HOME-SCREEN-V1.png (format PNG)
+4. Supprimez ce fichier .txt
+
+Spécifications: Voir ../HOME-SCREEN.md
+Prompt: Voir ../image_prompts/HOME-SCREEN-PROMPT.md

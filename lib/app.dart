@@ -16,7 +16,7 @@ class StatTrackApp extends StatelessWidget {
       title: 'StatTrack',
       theme: AppColors.themeData,
       darkTheme: AppColors.themeData,
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
       // Localization configuration

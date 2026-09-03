@@ -10,6 +10,7 @@
         "flutter",
         "flutter_localizations",
         "flutter_riverpod",
+        "google_fonts",
         "intl",
         "isar",
         "isar_flutter_libs",
@@ -123,6 +124,16 @@
       "version": "3.0.2",
       "dependencies": [
         "lints"
+      ]
+    },
+    {
+      "name": "google_fonts",
+      "version": "6.3.3",
+      "dependencies": [
+        "crypto",
+        "flutter",
+        "http",
+        "path_provider"
       ]
     },
     {
@@ -664,6 +675,16 @@
       "name": "lints",
       "version": "3.0.0",
       "dependencies": []
+    },
+    {
+      "name": "http",
+      "version": "1.6.0",
+      "dependencies": [
+        "async",
+        "http_parser",
+        "meta",
+        "web"
+      ]
     },
     {
       "name": "path_provider_windows",

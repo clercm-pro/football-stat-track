@@ -179,7 +179,7 @@ class AppLocalizations {
     'selectSeason': 'Sélectionner la saison',
     'matchesLabel': 'Matchs',
     'goalsLabel': 'Buts',
-    'assistsLabel': 'Passes décisives',
+    'assistsLabel': 'Passes D.',
     'startMatchButton': 'DÉMARRER UN MATCH',
     'matchInProgressError': 'Un match est déjà en cours pour ce profil',
     

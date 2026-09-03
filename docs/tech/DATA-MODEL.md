@@ -86,13 +86,80 @@ Represents a game session with recorded statistics.
 
 ### Stats (Computed)
 
-Aggregated statistics calculated from Match records.
+Aggregated statistics calculated from Match records. **NEW: Required for Scoreboard design implementation**
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `totalMatches` | int | Total number of matches played |
-| `totalGoals` | int | Total number of goals scored |
-| `totalAssists` | int | Total number of assists |
+| Field | Type | Description | Source | Required By |
+|-------|------|-------------|--------|-------------|
+| `totalMatches` | int | Total number of matches played | Matches | Profile screen, Home screen |
+| `totalGoals` | int | Total number of goals scored | Matches | Profile screen, Home screen |
+| `totalAssists` | int | Total number of assists | Matches | Profile screen, Home screen |
+
+### NEW: Derived Data for Scoreboard Design
+
+The Scoreboard design requires additional computed data that is NOT stored in the database but calculated on demand.
+
+#### Per-Profile, Per-Season Aggregates
+Required for: Profile screen hero block, Match log filtering
+
+```dart
+// Example provider for season aggregates
+final profileSeasonStatsProvider = Provider.family<ProfileSeasonStats, String>((ref, childId) {
+  final matches = ref.watch(matchesProvider);
+  final selectedSeason = ref.watch(selectedSeasonProvider);
+  
+  final filteredMatches = matches.where((match) => 
+    match.childId == childId && 
+    match.seasonId == selectedSeason?.id
+  ).toList();
+  
+  return ProfileSeasonStats(
+    totalMatches: filteredMatches.length,
+    totalGoals: filteredMatches.fold(0, (sum, m) => sum + m.goals),
+    totalAssists: filteredMatches.fold(0, (sum, m) => sum + m.assists),
+  );
+});
+```
+
+#### Sparkline Data
+Required for: Home screen player cards
+
+```dart
+// Get last 6 matches' goals for sparkline
+final sparklineDataProvider = Provider.family<List<int>, String>((ref, childId) {
+  final matches = ref.watch(matchesProvider);
+  final selectedSeason = ref.watch(selectedSeasonProvider);
+  
+  final filteredMatches = matches.where((match) => 
+    match.childId == childId && 
+    match.seasonId == selectedSeason?.id
+  ).toList();
+  
+  // Sort by date, get last 6
+  final sortedMatches = filteredMatches..sort((a, b) => b.startTime.compareTo(a.startTime));
+  final lastSix = sortedMatches.take(6).toList();
+  
+  // Calculate heights: goals as % of best match, min 15%
+  final maxGoals = lastSix.isNotEmpty ? lastSix.map((m) => m.goals).reduce(max) : 1;
+  final baseHeight = maxGoals > 0 ? maxGoals : 1;
+  
+  return lastSix.map((match) => match.goals).map((goals) => 
+    (goals / baseHeight).clamp(0.15, 1.0) // min 15%, max 100%
+  ).toList();
+});
+```
+
+#### Age Calculation
+Required for: Create Profile screen, Profile screen
+
+```dart
+// Computed from birthYear
+int? getAge(int? birthYear) {
+  if (birthYear == null) return null;
+  return DateTime.now().year - birthYear;
+}
+```
+
+**Note:** The current home screen hardcodes `0` for all card stats. This must be replaced with real aggregates from the derived data above.
 
 ---
 
@@ -175,6 +242,8 @@ Match(
 ---
 
 **See also:**
-- [Technical Architecture](ARCHITECTURE.md) for implementation details
-- [Sync Protocol](SYNC-PROTOCOL.md) for data synchronization format
-- [Functional Specifications](FUNCTIONAL-SPECS.md) for business rules
+- [ARCHITECTURE.md](ARCHITECTURE.md) for system architecture
+- [DESIGN-GUIDELINES.md](DESIGN-GUIDELINES.md) for visual specifications
+- [CODE-STANDARDS.md](CODE-STANDARDS.md) for coding conventions
+- [../SYNC-PROTOCOL.md](../SYNC-PROTOCOL.md) for data synchronization format
+- [../FUNCTIONAL-SPECS.md](../FUNCTIONAL-SPECS.md) for business rules

@@ -89,9 +89,53 @@ All data is encrypted using AES-256 before transmission. Keys are exchanged via 
 - Protection against interception
 - Secure data at rest and in transit
 
+### Design System - Scoreboard Theme (v2.0)
+
+**Migration Date:** 2026-09-03
+**Reference:** docs/design/claude_design/README.md
+**Gherkin Scenarios:** @DS-01, @HOME-01, @PROFILE-01, @MATCH-01, @SUMMARY-01, @CREATE-01, @LOC-02
+
+The application migrated from a **dark theme** with purple/blue palette to a **light theme** with modern turquoise palette.
+
+#### Theme Architecture
+- **Theme Type:** Light theme (replacing dark theme)
+- **Background:** `#F3F4F3` (light gray)
+- **Primary Colors:** `#008A78` (turquoise), `#01584A` (dark turquoise)
+- **Typography:** Archivo font family (replacing Roboto)
+- **Accessibility:** All contrast ratios ≥ 4.5:1
+
+#### Theme Implementation
+```dart
+// Theme configuration in lib/app.dart or lib/config/theme.dart
+ThemeData get lightTheme => ThemeData(
+  colorScheme: ColorScheme.light(
+    background: AppColors.background, // #F3F4F3
+    surface: AppColors.surface,     // #FFFFFF
+    primary: AppColors.primary,     // #008A78
+    onPrimary: Colors.white,
+    onSurface: AppColors.ink,       // #343B46
+  ),
+  fontFamily: 'Archivo',
+  // Other theme properties
+);
+```
+
+#### Design Tokens System
+The application uses a token-based design system for consistency:
+- **Colors:** Defined in `lib/config/colors.dart`
+- **Spacing:** Recommended to define in `lib/config/spacing.dart`
+- **Typography:** Recommended to define in `lib/config/typography.dart`
+
+#### Migration Impact
+- All screens required UI updates to match new design
+- No changes to state management or data layer
+- Backward compatibility maintained through theme switching
+
 ---
 
 **See also:**
-- [Data Model](DATA-MODEL.md) for entity definitions
-- [Sync Protocol](SYNC-PROTOCOL.md) for synchronization details
-- [Setup Guide](SETUP.md) for development environment configuration
+- [DESIGN-GUIDELINES.md](DESIGN-GUIDELINES.md) for visual specifications
+- [CODE-STANDARDS.md](CODE-STANDARDS.md) for coding conventions
+- [DATA-MODEL.md](DATA-MODEL.md) for entity definitions
+- [../SYNC-PROTOCOL.md](../SYNC-PROTOCOL.md) for synchronization details
+- [../SETUP.md](../SETUP.md) for development environment configuration

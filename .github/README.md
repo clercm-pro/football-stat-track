@@ -38,10 +38,10 @@ After a successful build, you can download the debug APK from the workflow artif
 Edit the `FLUTTER_VERSION` environment variable in the workflow file:
 ```yaml
 env:
-  FLUTTER_VERSION: '3.25.0'  # Change this to your version
+  FLUTTER_VERSION: '3.28.0'  # Change this to your version
 ```
 
-**Note:** Flutter 3.25.0+ supports intl 0.20.x (required by this project).
+**Note:** Flutter 3.28.0+ supports intl 0.20.x (required by this project).
 
 ### Add iOS Build
 Add a new job to the workflow:

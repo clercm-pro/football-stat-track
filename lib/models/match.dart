@@ -199,6 +199,15 @@ class MatchStats {
     this.totalAssists = 0,
   });
 
+  /// Create empty stats
+  factory MatchStats.empty() {
+    return MatchStats(
+      totalMatches: 0,
+      totalGoals: 0,
+      totalAssists: 0,
+    );
+  }
+
   /// Create from list of matches
   factory MatchStats.fromMatches(final List<Match> matches) {
     return MatchStats(

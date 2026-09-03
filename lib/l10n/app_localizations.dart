@@ -67,11 +67,12 @@ class AppLocalizations {
     
     // Profile Screen
     'recentMatches': 'Recent Matches',
+    'matchLog': 'Match log',
     'selectSeason': 'Select Season',
-    'matchesLabel': 'Matches',
-    'goalsLabel': 'Goals',
-    'assistsLabel': 'Assists',
-    'startMatchButton': 'START A MATCH',
+    'matchesLabel': 'MATCHES',
+    'goalsLabel': 'GOALS',
+    'assistsLabel': 'ASSISTS',
+    'startMatchButton': 'Start a match',
     'matchInProgressError': 'A match is already in progress for this profile',
     
     // Create Profile Screen
@@ -176,11 +177,12 @@ class AppLocalizations {
     
     // Profile Screen
     'recentMatches': 'Matchs récents',
+    'matchLog': 'Historique des matchs',
     'selectSeason': 'Sélectionner la saison',
-    'matchesLabel': 'Matchs',
-    'goalsLabel': 'Buts',
-    'assistsLabel': 'Passes D.',
-    'startMatchButton': 'DÉMARRER UN MATCH',
+    'matchesLabel': 'MATCHS',
+    'goalsLabel': 'BUTS',
+    'assistsLabel': 'PASS. D.',
+    'startMatchButton': 'Démarrer un match',
     'matchInProgressError': 'Un match est déjà en cours pour ce profil',
     
     // Create Profile Screen
@@ -298,6 +300,7 @@ class AppLocalizations {
 
   // Profile Screen
   String get recentMatches => translate('recentMatches');
+  String get matchLog => translate('matchLog');
   String get selectSeason => translate('selectSeason');
   String get matchesLabel => translate('matchesLabel');
   String get goalsLabel => translate('goalsLabel');

@@ -2,6 +2,8 @@
 
 **Local-first mobile app for tracking sports statistics across multiple profiles.**
 
+[![Flutter CI/CD](https://github.com/clercm-pro/football-stat-track/actions/workflows/flutter_ci.yml/badge.svg)](https://github.com/clercm-pro/football-stat-track/actions/workflows/flutter_ci.yml)
+
 ---
 
 ## What is StatTrack?

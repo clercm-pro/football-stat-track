@@ -9,7 +9,7 @@ on:
 
 # Environment variables
 env:
-  FLUTTER_VERSION: '3.28.0'
+  FLUTTER_VERSION: 'stable'
 
 # Jobs
 jobs:

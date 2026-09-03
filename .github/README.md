@@ -34,14 +34,16 @@ After a successful build, you can download the debug APK from the workflow artif
 
 ## 🔧 Customization
 
-### Change Flutter Channel
-Edit the `FLUTTER_CHANNEL` environment variable in the workflow file:
+### Change Flutter Version
+Edit the `FLUTTER_VERSION` environment variable in the workflow file:
 ```yaml
 env:
-  FLUTTER_CHANNEL: 'stable'  # Uses latest stable Flutter version
+  FLUTTER_VERSION: '3.19.5'  # Change this to your version
+  FLUTTER_CHANNEL: 'stable'
 ```
 
-**Note:** Latest stable Flutter supports intl 0.20.x (required by this project).
+**Note:** Flutter 3.19.5 is compatible with isar 3.1.x and intl 0.19.0 (from SDK).
+For intl 0.20.x support, also update pubspec.yaml constraints.
 
 ### Add iOS Build
 Add a new job to the workflow:

@@ -25,13 +25,4 @@ void main() {
     // Test implementation needed
   });
 
-  testWidgets('@BUG-COM-01-1 - Compilation fails with DiagnosticPropertiesBuilder', (final WidgetTester tester) async {
-    // TODO: Implement test based on Gherkin scenario
-    // Scenario: Compilation fails with DiagnosticPropertiesBuilder
-    // Given ProfileScreen contains debugFillProperties method
-    // When Running flutter build apk
-    // Then Compilation fails with "DiagnosticPropertiesBuilder not found"
-    // Test implementation needed
-  });
-
 }

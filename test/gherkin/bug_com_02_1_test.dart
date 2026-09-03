@@ -25,13 +25,4 @@ void main() {
     // Test implementation needed
   });
 
-  testWidgets('@BUG-COM-02-1 - Compilation fails with non-constant Offset', (final WidgetTester tester) async {
-    // TODO: Implement test based on Gherkin scenario
-    // Scenario: Compilation fails with non-constant Offset
-    // Given BoxShadow contains Offset with ternary expression
-    // When Running flutter build apk
-    // Then Compilation fails with "Not a constant expression"
-    // Test implementation needed
-  });
-
 }

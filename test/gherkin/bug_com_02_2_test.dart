@@ -23,16 +23,6 @@ void main() {
     // Given Offset values are extracted before BoxShadow
     // When Running flutter build apk
     // Then Compilation succeeds
-    // Given User enters birth year in create profile form
-    // Test implementation needed
-  });
-
-  testWidgets('@BUG-COM-02-2 - Compilation succeeds with extracted values', (final WidgetTester tester) async {
-    // TODO: Implement test based on Gherkin scenario
-    // Scenario: Compilation succeeds with extracted values
-    // Given Offset values are extracted before BoxShadow
-    // When Running flutter build apk
-    // Then Compilation succeeds
     // Test implementation needed
   });
 

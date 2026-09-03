@@ -28,14 +28,4 @@ void main() {
     // Test implementation needed
   });
 
-  testWidgets('@BUG-AND-01-2 - Application stable with SafeArea bottom true', (final WidgetTester tester) async {
-    // TODO: Implement test based on Gherkin scenario
-    // Scenario: Application stable with SafeArea bottom true
-    // Given MatchScreen uses SafeArea(bottom: true)
-    // When IME appears or disappears
-    // Then Application remains stable
-    // Given Flutter 3.x+ project
-    // Test implementation needed
-  });
-
 }

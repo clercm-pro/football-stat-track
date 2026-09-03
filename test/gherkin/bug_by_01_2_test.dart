@@ -32,15 +32,4 @@ void main() {
     // Test implementation needed
   });
 
-  testWidgets('@BUG-BY-01-2 - Successful save with valid birth year', (final WidgetTester tester) async {
-    // TODO: Implement test based on Gherkin scenario
-    // Scenario: Successful save with valid birth year
-    // Given I enter "2016" in birthYear field
-    // And Nickname field is filled
-    // When I tap "Save player"
-    // Then Profile is saved with birthYear = 2016
-    // And No exception is thrown
-    // Test implementation needed
-  });
-
 }

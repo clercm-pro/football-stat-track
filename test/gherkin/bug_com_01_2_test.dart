@@ -29,15 +29,4 @@ void main() {
     // Test implementation needed
   });
 
-  testWidgets('@BUG-COM-01-2 - Compilation succeeds without debug methods', (final WidgetTester tester) async {
-    // TODO: Implement test based on Gherkin scenario
-    // Scenario: Compilation succeeds without debug methods
-    // Given ProfileScreen has no debugFillProperties method
-    // When Running flutter build apk
-    // Then Compilation succeeds
-    // Given Android 14+ device
-    // And IME (soft keyboard) is enabled
-    // Test implementation needed
-  });
-
 }

@@ -211,12 +211,15 @@ void _generateFeaturesFile(Map<String, List<String>> gherkinScenarios) {
     }
   }
   
+  // Remove any existing Code-Embedded Gherkin Scenarios sections
+  final cleanedContent = _removeExistingScenariosSections(existingContent);
+  
   // Combine with existing content
   final newContent = StringBuffer();
   
   // If there's existing content, preserve it
-  if (existingContent.isNotEmpty) {
-    newContent.writeln(existingContent);
+  if (cleanedContent.isNotEmpty) {
+    newContent.writeln(cleanedContent);
     newContent.writeln('');
     newContent.writeln('---');
     newContent.writeln('');
@@ -233,4 +236,38 @@ void _generateFeaturesFile(Map<String, List<String>> gherkinScenarios) {
   featuresFile.writeAsStringSync(newContent.toString());
   
   print('✅ Written ${gherkinScenarios.length} features with ${_countScenarios(gherkinScenarios)} scenarios');
+}
+
+/// Remove existing Code-Embedded Gherkin Scenarios sections from content
+String _removeExistingScenariosSections(String content) {
+  final lines = content.split('\n');
+  final filteredLines = <String>[];
+  bool inScenariosSection = false;
+  
+  for (final line in lines) {
+    final trimmed = line.trim();
+    
+    // Check if we're entering a Code-Embedded Gherkin Scenarios section
+    if (trimmed == '## 🔧 Code-Embedded Gherkin Scenarios' ||
+        trimmed.startsWith('## 🔧 Code-Embedded Gherkin Scenarios')) {
+      inScenariosSection = true;
+      continue; // Skip this line and everything until next section
+    }
+    
+    // If we're in a scenarios section, skip until we find a separator or new section
+    if (inScenariosSection) {
+      if (trimmed == '---' || trimmed.startsWith('#')) {
+        inScenariosSection = false;
+        // Keep the separator or new section marker
+        if (trimmed == '---') {
+          continue; // Skip the separator, we'll add a new one
+        }
+      }
+      continue;
+    }
+    
+    filteredLines.add(line);
+  }
+  
+  return filteredLines.join('\n');
 }

@@ -25,13 +25,4 @@ void main() {
     // Test implementation needed
   });
 
-  testWidgets('@BUG-BY-01-1 - FormatException with invalid characters', (final WidgetTester tester) async {
-    // TODO: Implement test based on Gherkin scenario
-    // Scenario: FormatException with invalid characters
-    // Given I enter "&^" in birthYear field
-    // When I tap "Save player"
-    // Then I get FormatException with "Invalid radix-10 number"
-    // Test implementation needed
-  });
-
 }

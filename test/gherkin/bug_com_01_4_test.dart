@@ -17,14 +17,4 @@ void main() {
     // Test implementation needed
   });
 
-  testWidgets('@BUG-COM-01-4 - Compilation succeeds without debug methods in CreateSeasonScreen', (final WidgetTester tester) async {
-    // TODO: Implement test based on Gherkin scenario
-    // Scenario: Compilation succeeds without debug methods in CreateSeasonScreen
-    // Given CreateSeasonScreen has no debugFillProperties method
-    // When Running flutter build apk
-    // Then Compilation succeeds
-    // Given Flutter 3.x+ project
-    // Test implementation needed
-  });
-
 }

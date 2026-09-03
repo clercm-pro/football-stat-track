@@ -25,13 +25,4 @@ void main() {
     // Test implementation needed
   });
 
-  testWidgets('@BUG-AND-01-1 - Application crashes with SafeArea bottom false', (final WidgetTester tester) async {
-    // TODO: Implement test based on Gherkin scenario
-    // Scenario: Application crashes with SafeArea bottom false
-    // Given MatchScreen uses SafeArea(bottom: false)
-    // When IME appears or disappears
-    // Then Application crashes with "InteractionJankMonitor surface control error"
-    // Test implementation needed
-  });
-
 }

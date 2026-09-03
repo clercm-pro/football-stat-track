@@ -621,111 +621,6 @@ Feature: Correction du parsing de l'année de naissance
 
 ---
 
-## 🔧 Code-Embedded Gherkin Scenarios
-
-*Auto-generated from `@gherkin` annotations in code*
-
-| Metric | Value |
-|--------|-------|
-| **Scenarios** | 4 |
-| **Features** | 3 |
-| **Generated** | 2026-09-03T13:37:43.948241 |
-
-
-@BUG-BY-01 @high @regression @runtime
-Feature: Birth year parsing validation
-
-Background:
-Given User enters birth year in create profile form
-
-@BUG-BY-01-1
-Scenario: FormatException with invalid characters
-Given I enter "&^" in birthYear field
-When I tap "Save player"
-Then I get FormatException with "Invalid radix-10 number"
-
-@BUG-BY-01-2
-Scenario: Successful save with valid birth year
-Given I enter "2016" in birthYear field
-And Nickname field is filled
-When I tap "Save player"
-Then Profile is saved with birthYear = 2016
-And No exception is thrown
-
-
-@BUG-COM-01 @high @regression @compilation
-Feature: CreateSeasonScreen compilation without debug methods
-
-@BUG-COM-01-3
-Scenario: Compilation fails with debugFillProperties in CreateSeasonScreen
-Given CreateSeasonScreen contains debugFillProperties method
-When Running flutter build apk
-Then Compilation fails with "DiagnosticPropertiesBuilder not found"
-
-@BUG-COM-01-4
-Scenario: Compilation succeeds without debug methods in CreateSeasonScreen
-Given CreateSeasonScreen has no debugFillProperties method
-When Running flutter build apk
-Then Compilation succeeds
-
-
-@BUG-COM-01 @high @regression @compilation
-Feature: ProfileScreen compilation without debug methods
-
-Background:
-Given Flutter 3.x+ project
-
-@BUG-COM-01-1
-Scenario: Compilation fails with DiagnosticPropertiesBuilder
-Given ProfileScreen contains debugFillProperties method
-When Running flutter build apk
-Then Compilation fails with "DiagnosticPropertiesBuilder not found"
-
-@BUG-COM-01-2
-Scenario: Compilation succeeds without debug methods
-Given ProfileScreen has no debugFillProperties method
-When Running flutter build apk
-Then Compilation succeeds
-
-
-@BUG-AND-01 @high @regression @android @crash
-Feature: SafeArea Android IME compatibility
-
-Background:
-Given Android 14+ device
-And IME (soft keyboard) is enabled
-
-@BUG-AND-01-1
-Scenario: Application crashes with SafeArea bottom false
-Given MatchScreen uses SafeArea(bottom: false)
-When IME appears or disappears
-Then Application crashes with "InteractionJankMonitor surface control error"
-
-@BUG-AND-01-2
-Scenario: Application stable with SafeArea bottom true
-Given MatchScreen uses SafeArea(bottom: true)
-When IME appears or disappears
-Then Application remains stable
-
-@BUG-COM-02 @high @regression @compilation
-Feature: Non-constant Offset expression in BoxShadow
-
-Background:
-Given Flutter 3.x+ project
-
-@BUG-COM-02-1
-Scenario: Compilation fails with non-constant Offset
-Given BoxShadow contains Offset with ternary expression
-When Running flutter build apk
-Then Compilation fails with "Not a constant expression"
-
-@BUG-COM-02-2
-Scenario: Compilation succeeds with extracted values
-Given Offset values are extracted before BoxShadow
-When Running flutter build apk
-Then Compilation succeeds
-
-
 
 
 ---
@@ -738,7 +633,7 @@ Then Compilation succeeds
 |--------|-------|
 | **Scenarios** | 4 |
 | **Features** | 3 |
-| **Generated** | 2026-09-03T13:42:57.427367 |
+| **Generated** | 2026-09-03T14:01:25.201517 |
 
 
 @BUG-BY-01 @high @regression @runtime
